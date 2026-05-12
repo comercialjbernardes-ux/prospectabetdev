@@ -13,8 +13,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 | **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | `446f45f` |
 | **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | `045be8f` |
 | **4** | Alertas inteligentes via webhook | ✅ Concluída | ⏳ aguardando | `5cdc95f` |
-| **5** | AI Chat sobre os dados (Claude API) | ✅ Concluída | ⏳ aguardando | a commitar |
-| **6** | Anomalias + grupos empresariais | ⚪ Pendente | — | — |
+| **5** | AI Chat sobre os dados (Claude API) | ✅ Concluída | ⏳ aguardando | `20e6a97` |
+| **6** | Anomalias + grupos empresariais | ✅ Concluída | ⏳ aguardando | a commitar |
 | **7** | Email validation worker | ⚪ Pendente | — | — |
 
 Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
@@ -61,6 +61,39 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ 11ª req em /api/editar/min retorna HTTP 429
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
+
+### Etapa 6 — Anomalias + Grupos Empresariais ✅
+
+**Arquivos novos:**
+- `analise_grupos.py` (~140 linhas) — agrupa bets por CNPJ raiz (8 primeiros dígitos)
+- `analise_anomalias.py` (~190 linhas) — 3 detectores: URLs caindo, queda RA, novas sem email
+
+**`app.py`:**
+- Import top-level dos 2 módulos
+- Novo endpoint **`GET /api/holdings?top=N`** — retorna grupos com agregações (score médio, n_marcas, n_RA1000, etc.)
+- Novo endpoint **`GET /api/anomalias`** — retorna 3 categorias detectadas
+
+**Frontend:**
+- Nova seção `<section class="insights-section">` entre KPIs e filtros
+- 2 painéis lado a lado:
+  - **🏢 Holdings** (2/3) — top 5 grupos com cards detalhados (razão social, CNPJ raiz, lista de marcas tag-style, score médio, flags como RA1000/inativas/emails)
+  - **⚠️ Anomalias** (1/3) — 3 blocos coloridos (vermelho/laranja/azul) com top items
+- Responsive: 1 coluna em telas < 1100px
+- Carregamento assíncrono via fetch no DOMContentLoaded
+
+**Achados nos dados reais (n=186):**
+- **60 holdings empresariais detectadas** (com ≥2 marcas no mesmo CNPJ raiz)
+- **A2FBR S.A.** = maior grupo (6 marcas: BETBRA, BETESPECIAL, BOLSA DE APOSTA, FULLTBET, MATCHBOOK, PINNACLE)
+- **F12 DO BRASIL** = melhor grupo (3 marcas, 2 com RA1000, score médio 74)
+- **25 URLs caindo recorrentemente** (3+ falhas em 24h)
+- **15 oportunidades quentes** sem email cadastrado
+
+**Validação:**
+- ✅ `pytest tests/` — **77/77 passing** (9 novos: 4 em `TestAnaliseGrupos` + 5 em `TestAnaliseAnomalias`)
+- ✅ Mypy: Success no issues found em 2 módulos novos
+- ✅ Endpoints HTTP 200 com dados reais
+
+---
 
 ### Etapa 5 — AI Chat sobre os Dados ✅
 

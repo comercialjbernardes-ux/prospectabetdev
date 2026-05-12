@@ -80,6 +80,15 @@ except ImportError:
     ai_chat = None  # type: ignore
     _AI_CHAT_DISPONIVEL = False
 
+try:
+    import analise_grupos
+    import analise_anomalias
+    _ANALISE_DISPONIVEL = True
+except ImportError:
+    analise_grupos = None    # type: ignore
+    analise_anomalias = None  # type: ignore
+    _ANALISE_DISPONIVEL = False
+
 # Playwright disponÃ­vel?
 try:
     from playwright.sync_api import sync_playwright as _pw  # noqa: F401
@@ -790,6 +799,34 @@ def api_chat():
             "erro": "erro_interno",
             "resposta": f"❌ Erro interno: {e}",
         }), 500
+
+
+@app.route("/api/holdings")
+def api_holdings():
+    """Grupos empresariais por CNPJ raiz (etapa 6.1). Query: ?top=N (default 5)."""
+    if not _ANALISE_DISPONIVEL:
+        return jsonify({"holdings": [], "stats": {}})
+    try:
+        top = int(request.args.get("top", 5))
+    except ValueError:
+        top = 5
+    snap = _snapshot_dados()
+    holdings = analise_grupos.agrupar(snap)
+    stats = analise_grupos.estatisticas_grupos(snap)
+    return jsonify({
+        "holdings": holdings[:top],
+        "total_holdings": len(holdings),
+        "stats": stats,
+    })
+
+
+@app.route("/api/anomalias")
+def api_anomalias():
+    """Painel de anomalias da semana (etapa 6.3)."""
+    if not _ANALISE_DISPONIVEL:
+        return jsonify({"erro": "Módulo de análise indisponível"}), 503
+    snap = _snapshot_dados()
+    return jsonify(analise_anomalias.resumo(snap))
 
 
 @app.route("/health")

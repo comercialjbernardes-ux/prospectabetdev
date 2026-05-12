@@ -1755,6 +1755,217 @@ body.sidebar-collapsed .main-wrapper {
 .score-nd        { background: rgba(148,163,184,.12); color: #94a3b8; }   /* cinza */
 
 /* ============================================================================
+   INSIGHTS — Holdings + Anomalias (etapa 6)
+   ============================================================================ */
+.insights-section {
+  margin: 24px 32px 0;
+  position: relative;
+  z-index: 1;
+}
+.insights-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 1100px) {
+  .insights-grid { grid-template-columns: 1fr; }
+}
+
+.insight-card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.insight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+.insight-title {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+.insight-sub {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.insight-counter {
+  font-size: 11px;
+  color: var(--orange-deep);
+  background: var(--orange-bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.insight-loading, .insight-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 16px 0;
+  text-align: center;
+  font-size: 13px;
+}
+
+/* ---- Holdings ---- */
+.holding-card {
+  padding: 12px 14px;
+  border: 1px solid var(--border-muted);
+  border-radius: var(--r-sm);
+  margin-bottom: 10px;
+  background: var(--bg-2);
+  transition: var(--t-fast);
+}
+.holding-card:hover {
+  border-color: var(--border-orange);
+  box-shadow: var(--shadow-sm);
+}
+.holding-card:last-child { margin-bottom: 0; }
+.holding-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.holding-info { flex: 1; min-width: 0; }
+.holding-razao {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 13.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.holding-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+.holding-meta code {
+  background: var(--bg-1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font: 10.5px var(--font-mono);
+  color: var(--orange-deep);
+}
+.holding-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.holding-n-marcas {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.holding-marcas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.holding-marca {
+  background: #fff;
+  border: 1px solid var(--border-muted);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-2);
+}
+.holding-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.holding-flag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.holding-flag-ra1000  { background: rgba(99,102,241,.15); color: #6366f1; }
+.holding-flag-warn    { background: var(--warning-bg);   color: var(--warning); }
+.holding-flag-success { background: var(--success-bg);   color: var(--success); }
+
+/* ---- Anomalias ---- */
+.anomalia-bloco {
+  border: 1px solid var(--border-muted);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: var(--bg-2);
+}
+.anomalia-bloco:last-child { margin-bottom: 0; }
+.anomalia-bloco-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border-muted);
+}
+.anomalia-bloco-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink);
+}
+.anomalia-bloco-sub {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  margin-top: 1px;
+  font-family: var(--font-mono);
+}
+.anomalia-icon-red, .anomalia-icon-orange, .anomalia-icon-blue {
+  font-size: 18px;
+  line-height: 1;
+}
+.anomalia-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12.5px;
+  gap: 8px;
+}
+.anomalia-item b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+.anomalia-empty {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 4px 0;
+}
+.anomalia-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.anomalia-tag-red    { background: var(--danger-bg);  color: var(--danger); }
+.anomalia-tag-orange { background: var(--warning-bg); color: var(--warning); }
+.anomalia-tag-blue   { background: var(--info-bg);    color: var(--info); }
+
+/* ============================================================================
    AI CHAT — botão flutuante + drawer (etapa 5)
    ============================================================================ */
 #chat-fab {

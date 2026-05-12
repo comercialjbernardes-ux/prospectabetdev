@@ -602,3 +602,112 @@ class TestAiChat:
     def test_endpoint_chat_pergunta_longa(self, cliente):
         resp = cliente.post('/api/chat', json={'pergunta': 'x' * 3000})
         assert resp.status_code in (400, 503)
+
+
+# ---------------------------------------------------------------------------
+# Testes de análise — grupos empresariais + anomalias (etapa 6)
+# ---------------------------------------------------------------------------
+
+class TestAnaliseGrupos:
+
+    def test_cnpj_raiz_extrai_8_digitos(self):
+        from analise_grupos import cnpj_raiz
+        assert cnpj_raiz('55.590.815/0001-60') == '55590815'
+        assert cnpj_raiz('55590815000160') == '55590815'
+
+    def test_cnpj_raiz_invalido_retorna_vazio(self):
+        from analise_grupos import cnpj_raiz
+        assert cnpj_raiz(None) == ''
+        assert cnpj_raiz('') == ''
+        assert cnpj_raiz('123') == ''
+
+    def test_agrupar_holdings_min_2_marcas(self):
+        from analise_grupos import agrupar
+        dados = [
+            {'cnpj': '11.111.111/0001-00', 'marca': 'A', 'razao_social': 'GRUPO X', '_health_score': 80, '_url_health_status': 'ok'},
+            {'cnpj': '11.111.111/0002-00', 'marca': 'B', 'razao_social': 'GRUPO X', '_health_score': 60, '_url_health_status': 'ok'},
+            {'cnpj': '22.222.222/0001-00', 'marca': 'C', 'razao_social': 'INDEPENDENTE', '_health_score': 50},
+        ]
+        holdings = agrupar(dados)
+        # Apenas GRUPO X tem 2+ marcas
+        assert len(holdings) == 1
+        h = holdings[0]
+        assert h['cnpj_raiz'] == '11111111'
+        assert h['n_marcas'] == 2
+        assert h['score_medio'] == 70.0
+        assert set(h['marcas']) == {'A', 'B'}
+
+    def test_agrupar_ordena_por_n_marcas_desc(self):
+        from analise_grupos import agrupar
+        dados = [
+            {'cnpj': '11.111.111/0001', 'marca': 'A'},
+            {'cnpj': '11.111.111/0002', 'marca': 'B'},
+            {'cnpj': '22.222.222/0001', 'marca': 'C'},
+            {'cnpj': '22.222.222/0002', 'marca': 'D'},
+            {'cnpj': '22.222.222/0003', 'marca': 'E'},
+        ]
+        holdings = agrupar(dados)
+        # 22.222.222 tem 3 marcas → vem primeiro
+        assert holdings[0]['n_marcas'] == 3
+        assert holdings[1]['n_marcas'] == 2
+
+
+class TestAnaliseAnomalias:
+
+    def test_urls_caindo_filtra_3_falhas(self, tmp_path, monkeypatch):
+        import analise_anomalias
+        # Mock arquivo health com 1 URL com 3+ falhas e 1 com só 1
+        fake = tmp_path / 'url_health.json'
+        fake.write_text('{"http://a.com": {"_historico_falhas": ["2026-05-13T10:00", "2026-05-13T11:00", "2026-05-13T12:00"], "status": "erro_conexao", "http_code": 0}, "http://b.com": {"_historico_falhas": ["2026-05-13T10:00"]}}', encoding='utf-8')
+        monkeypatch.setattr(analise_anomalias, 'ARQUIVO_URL_HEALTH', fake)
+        registros = [
+            {'url': 'http://a.com', 'marca': 'A'},
+            {'url': 'http://b.com', 'marca': 'B'},
+        ]
+        anomalias = analise_anomalias.urls_caindo(registros)
+        assert len(anomalias) == 1
+        assert anomalias[0]['marca'] == 'A'
+        assert anomalias[0]['n_falhas_24h'] == 3
+
+    def test_novas_sem_email_filtra_dias(self):
+        from analise_anomalias import novas_sem_email
+        from datetime import datetime, timedelta
+        agora = datetime.now()
+        registros = [
+            # Adicionada hoje, sem email → entra
+            {'marca': 'NOVA1', 'email_contato': '', '_adicionado_em': agora.isoformat(timespec='seconds')},
+            # Adicionada há 5 dias, com email → não entra (tem email)
+            {'marca': 'COM_EMAIL', 'email_contato': 'x@y.com', '_adicionado_em': (agora - timedelta(days=5)).isoformat(timespec='seconds')},
+            # Adicionada há 60 dias, sem email → não entra (fora da janela)
+            {'marca': 'VELHA', 'email_contato': '', '_adicionado_em': (agora - timedelta(days=60)).isoformat(timespec='seconds')},
+        ]
+        result = novas_sem_email(registros, dias=30)
+        assert len(result) == 1
+        assert result[0]['marca'] == 'NOVA1'
+
+    def test_resumo_estrutura_completa(self, cliente):
+        from analise_anomalias import resumo
+        r = resumo([])
+        assert 'urls_caindo' in r
+        assert 'queda_ra' in r
+        assert 'novas_sem_email' in r
+        assert 'gerado_em' in r
+        # Cada categoria tem total + itens
+        for k in ('urls_caindo', 'queda_ra', 'novas_sem_email'):
+            assert 'total' in r[k]
+            assert 'itens' in r[k]
+
+    def test_endpoint_holdings_retorna_lista(self, cliente):
+        resp = cliente.get('/api/holdings?top=3')
+        assert resp.status_code == 200
+        j = resp.get_json()
+        assert 'holdings' in j
+        assert 'stats' in j
+        assert isinstance(j['holdings'], list)
+
+    def test_endpoint_anomalias_retorna_3_categorias(self, cliente):
+        resp = cliente.get('/api/anomalias')
+        assert resp.status_code == 200
+        j = resp.get_json()
+        for k in ('urls_caindo', 'queda_ra', 'novas_sem_email'):
+            assert k in j
