@@ -11,8 +11,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 | **0** | Criar fork + GitHub repo + porta 5003 | ✅ Concluída | ✅ 2026-05-12 | `adf3817` |
 | **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | `5d597e6` |
 | **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | `446f45f` |
-| **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | a commitar |
-| **4** | Alertas inteligentes via webhook | ⚪ Pendente | — | — |
+| **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | `045be8f` |
+| **4** | Alertas inteligentes via webhook | ✅ Concluída | ⏳ aguardando | a commitar |
 | **5** | AI Chat sobre os dados (Claude API) | ⚪ Pendente | — | — |
 | **6** | Anomalias + grupos empresariais | ⚪ Pendente | — | — |
 | **7** | Email validation worker | ⚪ Pendente | — | — |
@@ -61,6 +61,40 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ 11ª req em /api/editar/min retorna HTTP 429
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
+
+### Etapa 4 — Alertas Inteligentes via Webhook ✅
+
+**`notificacoes.py`:**
+- Nova função genérica `notificar_evento(tipo, titulo, campos)` — substituível para qualquer worker
+- Config default ganhou 3 novos tipos: `url_down`, `ra_score_drop`, `bet_removed`
+- `notificar_edicao()` preservado (compat com `/api/editar`)
+
+**`url_health.py` (4.1):**
+- Histórico `_historico_falhas` por URL (lista de timestamps das últimas 24h, cap 10)
+- `_detectar_alerta_url_down()` — se ≥3 falhas em 24h E sem alerta nas últimas 24h, dispara
+- Cooldown de 24h por URL evita spam
+
+**`reclame_aqui_health.py` (4.2):**
+- `_detectar_alerta_ra_queda()` — compara nota atual com a anterior salva
+- Dispara se queda ≥0.5 (limiar configurável `_LIMIAR_QUEDA_NOTA`)
+- Inclui no payload: nota_anterior, nota_atual, queda, url_ra, reputacao
+
+**`csv_sync.py` (4.3):**
+- Quando uma bet vira `_removido_do_csv=True`, dispara alerta `bet_removed`
+- Payload: marca, cnpj, url, removido_em
+
+**Frontend (4.4):**
+- Nova rota `/notificacoes` com página dedicada
+- Form com checkboxes por tipo de alerta, URL do webhook, tipo (Slack/Discord/JSON)
+- Botão "Disparar teste" para validar configuração antes de produção
+
+**Validação:**
+- ✅ `pytest tests/` — **58/58 passing** (7 novos em `TestAlertasInteligentes`)
+- ✅ Rotas `/notificacoes`, `/api/notificacoes/config`, `/api/notificacoes/teste` HTTP 200
+- ✅ 5 tipos de eventos suportados: edit, delete, url_down, ra_score_drop, bet_removed
+- ✅ Cooldown de 24h em url_down (evita spam)
+
+---
 
 ### Etapa 3 — Health Score Composto ✅
 

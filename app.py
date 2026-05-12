@@ -709,6 +709,12 @@ def api_snapshots():
         return jsonify([])
 
 
+@app.route("/notificacoes")
+def notificacoes_page():
+    """Página de configuração de alertas/webhooks (etapa 4.4)."""
+    return render_template("notificacoes.html")
+
+
 @app.route("/api/notificacoes/config", methods=["GET", "POST"])
 def api_notificacoes_config():
     """GET retorna config atual; POST atualiza."""

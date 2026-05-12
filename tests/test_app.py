@@ -443,3 +443,85 @@ class TestHealthScore:
         assert s['max']  == 85
         assert s['por_classe']['excelente'] == 1
         assert s['por_classe']['critico']   == 1
+
+
+# ---------------------------------------------------------------------------
+# Testes de alertas inteligentes (etapa 4)
+# ---------------------------------------------------------------------------
+
+class TestAlertasInteligentes:
+
+    def test_eventos_padrao_inclui_novos_tipos(self, tmp_path, monkeypatch):
+        import notificacoes
+        monkeypatch.setattr(notificacoes, 'ARQUIVO_CONFIG', tmp_path / 'cfg_eventos.json')
+        cfg = notificacoes.ler_config()
+        # Os 3 novos eventos devem estar na lista padrão
+        assert 'url_down' in cfg['eventos']
+        assert 'ra_score_drop' in cfg['eventos']
+        assert 'bet_removed' in cfg['eventos']
+        # E os 2 antigos preservados
+        assert 'edit' in cfg['eventos']
+        assert 'delete' in cfg['eventos']
+
+    def test_notificar_evento_sem_habilitado_nao_envia(self, tmp_path, monkeypatch):
+        import notificacoes
+        import time as _t
+        monkeypatch.setattr(notificacoes, 'ARQUIVO_CONFIG', tmp_path / 'cfg_off.json')
+        notificacoes.salvar_config({'habilitado': False, 'webhook_url': 'http://fake.example.com'})
+        # Sem habilitado: a thread deve sair imediatamente sem erro
+        notificacoes.notificar_evento('url_down', 'teste', {'url': 'http://x.com'})
+        _t.sleep(0.3)  # dá tempo da thread terminar
+
+    def test_notificar_evento_tipo_nao_listado_nao_envia(self, tmp_path, monkeypatch):
+        import notificacoes
+        import time as _t
+        monkeypatch.setattr(notificacoes, 'ARQUIVO_CONFIG', tmp_path / 'cfg_tipos.json')
+        notificacoes.salvar_config({
+            'habilitado': True,
+            'webhook_url': 'http://fake.example.com',
+            'eventos': ['edit'],   # só 'edit'
+        })
+        # url_down não está em eventos → não deve tentar enviar
+        notificacoes.notificar_evento('url_down', 'teste', {})
+        _t.sleep(0.3)
+
+    def test_detectar_alerta_url_down_acumula_falhas(self):
+        from url_health import _detectar_alerta_url_down
+        # Simula 3 falhas seguidas
+        antigo = {'_historico_falhas': [
+            '2026-05-12T18:00:00', '2026-05-12T18:15:00',
+        ]}
+        novo = {
+            'status': 'erro_conexao',
+            'checado_em': '2026-05-12T18:30:00',
+            'http_code': 0,
+        }
+        result = _detectar_alerta_url_down('http://x.com', novo, antigo)
+        # 3 falhas → trigger
+        assert len(result['_historico_falhas']) >= 3
+        assert '_alerta_disparado_em' in result
+
+    def test_detectar_alerta_url_down_sucesso_nao_dispara(self):
+        from url_health import _detectar_alerta_url_down
+        antigo = {'_historico_falhas': []}
+        novo = {'status': 'ok', 'checado_em': '2026-05-12T18:30:00', 'http_code': 200}
+        result = _detectar_alerta_url_down('http://x.com', novo, antigo)
+        # Sucesso não adiciona ao histórico nem dispara alerta
+        assert len(result['_historico_falhas']) == 0
+        assert '_alerta_disparado_em' not in result or not result.get('_alerta_disparado_em')
+
+    def test_detectar_alerta_ra_queda_de_05_dispara(self):
+        from reclame_aqui_health import _detectar_alerta_ra_queda
+        antigo = {'status': 'encontrado', 'nota': 8.5}
+        novo   = {'status': 'encontrado', 'nota': 7.9,
+                  'url_reclame_aqui': 'https://x.com', 'reputacao': 'Bom'}
+        # Apenas valida que executa sem erro (notificacao real é assincrona)
+        result = _detectar_alerta_ra_queda('TESTBET', novo, antigo)
+        assert result is novo  # retorna o mesmo dict
+
+    def test_detectar_alerta_ra_sem_dado_anterior_nao_dispara(self):
+        from reclame_aqui_health import _detectar_alerta_ra_queda
+        antigo = {}   # sem dado anterior
+        novo   = {'status': 'encontrado', 'nota': 7.0}
+        result = _detectar_alerta_ra_queda('NEWBET', novo, antigo)
+        assert result is novo

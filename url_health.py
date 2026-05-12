@@ -349,6 +349,64 @@ def _aplicar_redirect_como_override(url_original: str, url_final: str) -> bool:
     return True
 
 
+_STATUS_FALHA = {"erro_http", "erro_conexao", "erro_ssl", "erro_dns", "timeout", "erro"}
+_ALERTA_RECORRENCIA = 3        # nº de falhas em 24h para disparar alerta
+_ALERTA_JANELA_SEG  = 86400    # 24h
+_ALERTA_COOLDOWN    = 86400    # não re-dispara para a mesma URL em <24h
+
+
+def _detectar_alerta_url_down(url: str, novo: dict, antigo: dict) -> dict:
+    """
+    Atualiza histórico de falhas e dispara alerta se ≥3 falhas em 24h
+    (e nenhum alerta já disparado nas últimas 24h).
+    Retorna o `novo` com `_historico_falhas` e `_alerta_disparado_em` mesclados.
+    """
+    historico = list(antigo.get("_historico_falhas") or [])
+    agora = time.time()
+    # Adiciona timestamp se foi falha agora
+    if novo.get("status") in _STATUS_FALHA:
+        historico.append(novo.get("checado_em") or datetime.now().isoformat(timespec="seconds"))
+
+    # Mantém apenas os últimos N timestamps dentro da janela 24h
+    def _ts_to_epoch(ts: str) -> float:
+        try:
+            return datetime.fromisoformat(str(ts).replace("Z", "")).timestamp()
+        except (ValueError, TypeError):
+            return 0.0
+    historico = [ts for ts in historico if (agora - _ts_to_epoch(ts)) < _ALERTA_JANELA_SEG]
+    historico = historico[-10:]   # cap absoluto de 10 entradas
+    novo["_historico_falhas"] = historico
+
+    # Decide se dispara alerta
+    ultimo_alerta = antigo.get("_alerta_disparado_em") or ""
+    ultimo_epoch  = _ts_to_epoch(ultimo_alerta) if ultimo_alerta else 0.0
+    em_cooldown = (agora - ultimo_epoch) < _ALERTA_COOLDOWN
+
+    if len(historico) >= _ALERTA_RECORRENCIA and not em_cooldown:
+        novo["_alerta_disparado_em"] = datetime.now().isoformat(timespec="seconds")
+        try:
+            from notificacoes import notificar_evento
+            notificar_evento(
+                tipo="url_down",
+                titulo=f"⚠️ URL caindo recorrente — {url}",
+                campos={
+                    "url":           url,
+                    "falhas_24h":    len(historico),
+                    "ultima_status": novo.get("status", "?"),
+                    "http_code":     novo.get("http_code", 0),
+                    "primeira_falha": historico[0] if historico else "?",
+                },
+            )
+            logger.warning(f"[alerta] URL down recorrente: {url} ({len(historico)} falhas em 24h)")
+        except Exception:
+            logger.exception("Falha ao disparar alerta url_down")
+    else:
+        # Preserva campo de alerta anterior se existir (não limpa só por sucesso único)
+        if ultimo_alerta:
+            novo["_alerta_disparado_em"] = ultimo_alerta
+    return novo
+
+
 def _tick() -> int:
     """Executa um tick. Retorna quantas URLs foram validadas."""
     urls = _listar_urls()
@@ -365,6 +423,8 @@ def _tick() -> int:
     with _lock:
         health = _carregar_health()  # recarrega (thread-safe)
         for url, res in resultados:
+            antigo = health.get(url) or {}
+            res = _detectar_alerta_url_down(url, res, antigo)
             health[url] = res
         # Limpa entradas órfãs (URL que não existe mais na base)
         urls_ativas = set(urls)

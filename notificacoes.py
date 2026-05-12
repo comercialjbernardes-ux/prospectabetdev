@@ -37,7 +37,12 @@ _CONFIG_PADRAO = {
     "habilitado":   False,
     "webhook_url":  "",
     "tipo":         "json",       # "slack" | "discord" | "json"
-    "eventos":      ["edit", "delete"],
+    # Tipos de evento suportados:
+    #   edit, delete, reset      — edições manuais via /api/editar (etapa 1.0)
+    #   url_down                 — site caiu 3+ vezes em 24h (etapa 4.1)
+    #   ra_score_drop            — nota Reclame Aqui caiu >=0.5 (etapa 4.2)
+    #   bet_removed              — bet saiu da lista gov.br (etapa 4.3)
+    "eventos":      ["edit", "delete", "url_down", "ra_score_drop", "bet_removed"],
     "timeout_seg":  5,
 }
 
@@ -135,6 +140,35 @@ def _enviar_webhook(url: str, payload: dict, timeout: int = 5) -> tuple[bool, st
 # API pública
 # ---------------------------------------------------------------------------
 
+def notificar_evento(tipo: str, titulo: str, campos: dict) -> None:
+    """
+    Dispara webhook em background se `tipo` está na lista de eventos configurados.
+    API genérica usada pelos workers (url_down, ra_score_drop, bet_removed) e
+    também internamente por `notificar_edicao`. Falhas são silenciosas.
+
+    :param tipo:   identificador do evento (deve estar em cfg.eventos)
+    :param titulo: título exibido no webhook
+    :param campos: dict com pares chave-valor que vão para o corpo
+    """
+    def _tarefa() -> None:
+        cfg = ler_config()
+        if not cfg.get("habilitado"):
+            return
+        if tipo not in (cfg.get("eventos") or []):
+            return
+        url = (cfg.get("webhook_url") or "").strip()
+        if not url:
+            return
+        # Garantia: campo `ts` sempre presente
+        body = dict(campos)
+        body.setdefault("ts", datetime.now().isoformat(timespec="seconds"))
+        body.setdefault("tipo", tipo)
+        payload = _construir_payload(cfg, titulo, body)
+        _enviar_webhook(url, payload, timeout=cfg.get("timeout_seg", 5))
+
+    threading.Thread(target=_tarefa, daemon=True).start()
+
+
 def notificar_edicao(
     cnpj: str,
     campo: str,
@@ -142,10 +176,7 @@ def notificar_edicao(
     valor_novo,
     acao: str = "edit",
 ) -> None:
-    """
-    Dispara webhook em background se ação está na lista de eventos configurados.
-    Nunca bloqueia — falhas são silenciosas.
-    """
+    """Compat: chamada original do /api/editar. Internamente usa notificar_evento."""
     def _tarefa():
         cfg = ler_config()
         if not cfg.get("habilitado"):

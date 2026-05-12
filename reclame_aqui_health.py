@@ -401,6 +401,44 @@ def _selecionar_fatia(marcas: list[str], health: dict, n: int) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
+_LIMIAR_QUEDA_NOTA = 0.5    # queda mínima da nota RA para disparar alerta
+
+
+def _detectar_alerta_ra_queda(marca: str, novo: dict, antigo: dict) -> dict:
+    """
+    Se a nota RA caiu >= 0.5 desde a última verificação, dispara alerta.
+    Mantém `_ultima_nota` no registro para comparação na próxima verificação.
+    """
+    nota_atual    = novo.get("nota")
+    nota_anterior = antigo.get("nota") if antigo.get("status") == "encontrado" else None
+
+    # Só compara se ambos os checks tiveram nota válida
+    if nota_atual is not None and nota_anterior is not None:
+        try:
+            queda = float(nota_anterior) - float(nota_atual)
+        except (TypeError, ValueError):
+            queda = 0.0
+        if queda >= _LIMIAR_QUEDA_NOTA:
+            try:
+                from notificacoes import notificar_evento
+                notificar_evento(
+                    tipo="ra_score_drop",
+                    titulo=f"📉 Queda na nota Reclame Aqui — {marca}",
+                    campos={
+                        "marca":         marca,
+                        "nota_anterior": nota_anterior,
+                        "nota_atual":    nota_atual,
+                        "queda":         round(queda, 2),
+                        "url_ra":        novo.get("url_reclame_aqui", ""),
+                        "reputacao":     novo.get("reputacao", ""),
+                    },
+                )
+                logger.warning(f"[alerta] {marca}: nota RA caiu {queda:.2f} ({nota_anterior} → {nota_atual})")
+            except Exception:
+                logger.exception("Falha ao disparar alerta ra_score_drop")
+    return novo
+
+
 def _tick() -> tuple[int, int]:
     marcas = _listar_marcas()
     with _lock:
@@ -417,6 +455,8 @@ def _tick() -> tuple[int, int]:
         health = _carregar_health()
         for marca, res in resultados:
             slug = _slug_principal(marca)
+            antigo = health.get(slug) or {}
+            res = _detectar_alerta_ra_queda(marca, res, antigo)
             health[slug] = res
         # Limpa entradas órfãs (marcas que não existem mais)
         slugs_ativos = {_slug_principal(m) for m in marcas}

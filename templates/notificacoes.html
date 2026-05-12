@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Bets — Notificações</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">Prospector</span>
+      <span class="brand-sub">Bets · v3</span>
+    </div>
+  </div>
+  <div class="sidebar-section-title">Navegação</div>
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('index') }}" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+      <span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('auditoria') }}" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span>
+      <span>Auditoria</span>
+    </a>
+    <a href="{{ url_for('notificacoes_page') }}" class="nav-item active">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+      <span>Notificações</span>
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    Min. da Fazenda<br>SPA · Lei 14.790/23
+  </div>
+</aside>
+
+<div class="main-wrapper">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Notificações &amp; Alertas</div>
+      <div class="topbar-breadcrumb">
+        <span>DASHBOARD</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active">CONFIGURACAO_WEBHOOK</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content" style="padding:24px; max-width:780px">
+    <h2 class="section-title">Configuração de Webhook</h2>
+    <p class="section-subtitle">// CONFIGURE UM ENDPOINT (SLACK, DISCORD OU HTTP GENÉRICO) PARA RECEBER ALERTAS EM TEMPO REAL</p>
+
+    <form id="notif-form" class="audit-toolbar" style="flex-direction:column; align-items:stretch; gap:14px; padding:24px; background:var(--bg-1); border-radius:var(--r-lg); box-shadow:var(--shadow-sm)">
+
+      <label style="display:flex; align-items:center; gap:10px; font-weight:600">
+        <input type="checkbox" id="habilitado" /> Notificações habilitadas
+      </label>
+
+      <label>
+        <div style="font-size:.85rem; color:var(--text-2); margin-bottom:4px; font-weight:600">Webhook URL</div>
+        <input id="webhook_url" type="url" placeholder="https://hooks.slack.com/services/..." style="width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--r-sm); font:inherit" />
+      </label>
+
+      <label>
+        <div style="font-size:.85rem; color:var(--text-2); margin-bottom:4px; font-weight:600">Tipo de webhook</div>
+        <select id="tipo" class="fbar-select" style="width:200px">
+          <option value="json">JSON genérico</option>
+          <option value="slack">Slack</option>
+          <option value="discord">Discord</option>
+        </select>
+      </label>
+
+      <fieldset style="border:1px solid var(--border); padding:14px 18px; border-radius:var(--r); margin-top:8px">
+        <legend style="font-weight:700; padding:0 8px; color:var(--text-2)">Eventos que disparam alerta</legend>
+
+        <label class="evento-row"><input type="checkbox" name="evento" value="edit" /> ✏️ <b>edit</b> — edição manual de campo via dashboard</label>
+        <label class="evento-row"><input type="checkbox" name="evento" value="delete" /> 🗑️ <b>delete</b> — campo apagado/resetado via dashboard</label>
+        <label class="evento-row"><input type="checkbox" name="evento" value="url_down" /> 🔴 <b>url_down</b> — site caiu 3+ vezes nas últimas 24h</label>
+        <label class="evento-row"><input type="checkbox" name="evento" value="ra_score_drop" /> 📉 <b>ra_score_drop</b> — nota Reclame Aqui caiu ≥0.5</label>
+        <label class="evento-row"><input type="checkbox" name="evento" value="bet_removed" /> 🚫 <b>bet_removed</b> — bet saiu da lista oficial gov.br</label>
+      </fieldset>
+
+      <div style="display:flex; gap:10px; margin-top:12px">
+        <button type="submit" class="btn-audit">Salvar configuração</button>
+        <button type="button" class="btn-audit-ghost" id="btn-teste">Disparar teste</button>
+      </div>
+
+      <div id="notif-status" style="margin-top:8px; font-size:.9rem"></div>
+    </form>
+
+    <h3 class="section-title" style="margin-top:36px">Como funciona</h3>
+    <ul style="line-height:1.8; color:var(--text-2)">
+      <li><b>Slack/Discord:</b> cole a URL do incoming webhook. Mensagens formatadas com markdown leve.</li>
+      <li><b>JSON genérico:</b> POST com body <code>{titulo, ts, tipo, ...campos}</code>. Útil para Zapier, n8n, automações HTTP.</li>
+      <li>Alertas <b>url_down</b> e <b>ra_score_drop</b> têm cooldown de 24h por bet para evitar spam.</li>
+      <li>Logs de cada disparo ficam em <code>logs/</code>.</li>
+    </ul>
+  </main>
+</div>
+
+<style>
+.evento-row { display:flex; align-items:center; gap:8px; margin:6px 0; font-size:.92rem }
+.evento-row input[type=checkbox] { width:16px; height:16px }
+</style>
+
+<script>
+async function carregar() {
+  const r = await fetch('/api/notificacoes/config');
+  const cfg = await r.json();
+  document.getElementById('habilitado').checked = !!cfg.habilitado;
+  document.getElementById('webhook_url').value  = cfg.webhook_url || '';
+  document.getElementById('tipo').value         = cfg.tipo || 'json';
+  const eventos = cfg.eventos || [];
+  document.querySelectorAll('input[name="evento"]').forEach(el => {
+    el.checked = eventos.includes(el.value);
+  });
+}
+
+async function salvar(ev) {
+  ev.preventDefault();
+  const eventos = Array.from(document.querySelectorAll('input[name="evento"]:checked')).map(el => el.value);
+  const body = {
+    habilitado: document.getElementById('habilitado').checked,
+    webhook_url: document.getElementById('webhook_url').value.trim(),
+    tipo: document.getElementById('tipo').value,
+    eventos,
+  };
+  const r = await fetch('/api/notificacoes/config', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(body),
+  });
+  const out = document.getElementById('notif-status');
+  if (r.ok) {
+    out.innerHTML = '<span style="color:var(--success)">✅ Configuração salva.</span>';
+  } else {
+    out.innerHTML = '<span style="color:var(--danger)">❌ Erro ao salvar.</span>';
+  }
+}
+
+document.getElementById('btn-teste').addEventListener('click', async () => {
+  // Salva primeiro, depois testa
+  await salvar({preventDefault: ()=>{}});
+  const r = await fetch('/api/notificacoes/teste', {method: 'POST'});
+  const j = await r.json();
+  const out = document.getElementById('notif-status');
+  if (j.ok) {
+    out.innerHTML = '<span style="color:var(--success)">✅ Teste enviado: ' + (j.mensagem || 'OK') + '</span>';
+  } else {
+    out.innerHTML = '<span style="color:var(--danger)">❌ Falha: ' + (j.mensagem || 'desconhecida') + '</span>';
+  }
+});
+
+document.getElementById('notif-form').addEventListener('submit', salvar);
+carregar();
+</script>
+</body>
+</html>

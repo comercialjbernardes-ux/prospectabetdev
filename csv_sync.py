@@ -290,6 +290,21 @@ def sincronizar_uma_vez() -> dict:
                         "marca": existente.get("marca", ""),
                         "url": existente.get("url", ""),
                     })
+                    # Dispara alerta (etapa 4.3)
+                    try:
+                        from notificacoes import notificar_evento
+                        notificar_evento(
+                            tipo="bet_removed",
+                            titulo=f"🚫 Bet removida da lista gov.br — {existente.get('marca', '')}",
+                            campos={
+                                "marca":       existente.get("marca", ""),
+                                "cnpj":        existente.get("cnpj", ""),
+                                "url":         existente.get("url", ""),
+                                "removido_em": existente.get("_removido_em"),
+                            },
+                        )
+                    except Exception:
+                        pass  # falha silenciosa — não bloqueia o sync
             else:
                 # Reativa se voltou
                 if existente.get("_removido_do_csv"):
