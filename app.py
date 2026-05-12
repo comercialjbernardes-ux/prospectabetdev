@@ -216,6 +216,12 @@ def _aplicar_filtros_query(registros: list[dict], params: dict) -> list[dict]:
     dt_ini     = params.get("data_inicio", "")
     dt_fim     = params.get("data_fim", "")
     saude_url  = params.get("saude_url", "")
+    # Health Score mínimo (etapa 3.3)
+    score_min_raw = params.get("score_min", "")
+    try:
+        score_min = int(score_min_raw) if score_min_raw not in ("", None) else None
+    except ValueError:
+        score_min = None
 
     resultado = []
     for r in registros:
@@ -252,6 +258,8 @@ def _aplicar_filtros_query(registros: list[dict], params: dict) -> list[dict]:
             if saude_url == "bloqueado"   and st != "bloqueado":  continue  # 4xx bots
             if saude_url == "erro"        and st not in _ERROS:   continue  # 5xx/offline
             if saude_url == "desconhecido" and st != "desconhecido": continue
+        if score_min is not None and int(r.get("_health_score") or 0) < score_min:
+            continue
         resultado.append(r)
     return resultado
 

@@ -39,6 +39,7 @@ from threading import Lock, RLock
 from typing import Any, Callable
 
 import json_store
+import health_score
 from logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -370,6 +371,8 @@ def recarregar(
     aplicar_url_health(dados, url_health_module)
     aplicar_afiliados_health(dados)
     aplicar_reclame_aqui_health(dados, ra_module)
+    # Score composto — calculado DEPOIS dos merges, escreve _health_score em cada registro
+    health_score.aplicar_em_lote(dados)
     with _dados_lock:
         _dados = dados
     _ultima_recarga_ts = time.time()

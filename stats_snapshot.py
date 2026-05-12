@@ -48,14 +48,30 @@ def _calcular_stats(dados: list[dict]) -> dict:
     editados  = sum(1 for r in dados if r.get("_editado_manualmente"))
     urls_ok   = sum(1 for r in dados if r.get("_url_health_status") == "ok")
     urls_ina  = sum(1 for r in dados if r.get("_url_inativa"))
+
+    # Health Score histórico (etapa 3.4)
+    scores = [int(r["_health_score"]) for r in dados if "_health_score" in r]
+    if scores:
+        score_medio    = round(sum(scores) / len(scores), 1)
+        score_mediana  = sorted(scores)[len(scores) // 2]
+        score_excelente = sum(1 for s in scores if s >= 80)
+        score_critico   = sum(1 for s in scores if s < 30)
+    else:
+        score_medio = score_mediana = 0.0
+        score_excelente = score_critico = 0
+
     return {
-        "total":          total,
-        "com_email":      com_email,
-        "sem_email":      sem_email,
-        "com_afiliados":  com_afil,
-        "editados":       editados,
-        "urls_ativas":    urls_ok,
-        "urls_inativas":  urls_ina,
+        "total":           total,
+        "com_email":       com_email,
+        "sem_email":       sem_email,
+        "com_afiliados":   com_afil,
+        "editados":        editados,
+        "urls_ativas":     urls_ok,
+        "urls_inativas":   urls_ina,
+        "score_medio":     score_medio,
+        "score_mediana":   score_mediana,
+        "score_excelente": score_excelente,    # bets com score >= 80
+        "score_critico":   score_critico,      # bets com score < 30
     }
 
 

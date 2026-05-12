@@ -103,7 +103,7 @@ async function ressincronizar() {
 function filtroAtivo() {
   const campos = ['f-marca', 'f-status', 'f-afiliados', 'f-porte', 'f-situacao',
                   'f-uf', 'f-municipio', 'f-data-inicio', 'f-data-fim', 'f-saude-url',
-                  'f-reclame-aqui'];
+                  'f-reclame-aqui', 'f-score'];
   return campos.some(id => (document.getElementById(id)?.value || '').trim() !== '');
 }
 
@@ -257,6 +257,7 @@ function aplicarFiltros() {
   const dataFim     = document.getElementById('f-data-fim').value;
   const saudeUrl    = document.getElementById('f-saude-url')?.value || '';
   const fRa         = document.getElementById('f-reclame-aqui')?.value || '';
+  const fScore      = document.getElementById('f-score')?.value || '';
 
   dadosFiltrados = todosOsDados.filter(r => {
     if (marca && !(r.marca || '').toLowerCase().includes(marca)) return false;
@@ -300,6 +301,15 @@ function aplicarFiltros() {
       if (fRa === 'nao_encontrado' && raSt !== 'nao_encontrado') return false;
       if (fRa === 'desconhecido'   && raSt !== 'desconhecido')   return false;
     }
+    if (fScore) {
+      const score = r._health_score ?? 0;
+      if (fScore === 'critico') {
+        if (score >= 30) return false;
+      } else {
+        const minScore = parseInt(fScore, 10);
+        if (!isNaN(minScore) && score < minScore) return false;
+      }
+    }
     return true;
   });
 
@@ -312,7 +322,7 @@ function limparFiltros() {
   ['f-marca', 'f-data-inicio', 'f-data-fim'].forEach(id => {
     document.getElementById(id).value = '';
   });
-  ['f-status', 'f-afiliados', 'f-porte', 'f-situacao', 'f-uf', 'f-municipio', 'f-saude-url', 'f-reclame-aqui'].forEach(id => {
+  ['f-status', 'f-afiliados', 'f-porte', 'f-situacao', 'f-uf', 'f-municipio', 'f-saude-url', 'f-reclame-aqui', 'f-score'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.selectedIndex = 0;
   });
@@ -373,7 +383,7 @@ function renderizarTabela() {
   tbody.innerHTML = '';
 
   if (total === 0) {
-    tbody.innerHTML = `<tr><td colspan="14" class="empty-state">Nenhum resultado para os filtros aplicados.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="15" class="empty-state">Nenhum resultado para os filtros aplicados.</td></tr>`;
     document.getElementById('table-count').textContent = '0 registros encontrados';
     document.getElementById('pagination').style.display = 'none';
     document.getElementById('table-wrapper').style.display = 'block';
@@ -406,6 +416,7 @@ function renderizarTabela() {
       <td>${celulaEditavel(r, 'email_contato', 'email')}</td>
       <td>${badgeAfiliados(r)}</td>
       <td>${badgeReclameAqui(r)}</td>
+      <td>${badgeScore(r)}</td>
       <td>${esc(r.uf) || '—'}</td>
       <td title="${esc(r.municipio)}">${esc(r.municipio) || '—'}</td>
       <td>${badgeStatus(r.status)}</td>
@@ -1198,6 +1209,39 @@ function iniciarPollingAfiliadosHealth() {
   // Primeiro tick em 5s, depois a cada 30s
   setTimeout(atualizar, 5000);
   setInterval(atualizar, 30000);
+}
+
+// ---------------------------------------------------------------------------
+// Health Score — badge colorido 0-100 (etapa 3.2)
+// ---------------------------------------------------------------------------
+
+function badgeScore(r) {
+  const s = r._health_score;
+  if (s === undefined || s === null) {
+    return `<span class="score-cell"><span class="score-badge score-nd" title="Score ainda não calculado">—</span></span>`;
+  }
+  const cls = r._health_score_classe || (
+    s >= 80 ? 'excelente' :
+    s >= 65 ? 'bom' :
+    s >= 50 ? 'regular' :
+    s >= 30 ? 'ruim' : 'critico'
+  );
+  const labelClasse = {
+    excelente: 'Excelente',
+    bom:       'Bom',
+    regular:   'Regular',
+    ruim:      'Ruim',
+    critico:   'Crítico',
+  }[cls] || cls;
+  // Tooltip explicativo: mostra componentes do score
+  const partes = [
+    `${labelClasse} · score ${s}/100`,
+    r._url_health_status ? `URL: ${r._url_health_status}` : '',
+    r._ra_nota != null  ? `RA: ${r._ra_nota}/10` : (r._ra_status === 'nao_encontrado' ? 'RA: não encontrado' : ''),
+    r._afiliados_display === 'sim' ? 'Afiliados: sim' : (r._afiliados_display === 'nao' ? 'Afiliados: não' : ''),
+    r.email_contato ? 'Com email' : 'Sem email',
+  ].filter(Boolean).join(' · ');
+  return `<span class="score-cell"><span class="score-badge score-${cls}" title="${esc(partes)}">${s}</span></span>`;
 }
 
 // ---------------------------------------------------------------------------

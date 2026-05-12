@@ -213,6 +213,14 @@
         <option value="desconhecido">⚪ Não verificado</option>
       </select>
 
+      <select id="f-score" class="fbar-select" title="Score composto de qualidade (URL + RA + afiliados + email)">
+        <option value="">Score</option>
+        <option value="80">⭐ Excelente (≥80)</option>
+        <option value="65">👍 Bom (≥65)</option>
+        <option value="50">≈ Regular (≥50)</option>
+        <option value="critico">⚠ Críticos (&lt;30)</option>
+      </select>
+
       <select id="f-porte" class="fbar-select"><option value="">Porte</option></select>
       <select id="f-situacao" class="fbar-select"><option value="">Situação</option></select>
       <select id="f-uf" class="fbar-select" onchange="atualizarMunicipios()"><option value="">UF</option></select>
@@ -268,6 +276,7 @@
             <th>Email</th>
             <th>Afiliado</th>
             <th>Reclame Aqui</th>
+            <th class="sortable" data-col="_health_score" onclick="ordenarPor('_health_score')">Score <span class="sort-icon">↕</span></th>
             <th class="sortable" data-col="uf" onclick="ordenarPor('uf')">UF <span class="sort-icon">↕</span></th>
             <th class="sortable" data-col="municipio" onclick="ordenarPor('municipio')">Município <span class="sort-icon">↕</span></th>
             <th class="sortable" data-col="status" onclick="ordenarPor('status')">Status <span class="sort-icon">↕</span></th>

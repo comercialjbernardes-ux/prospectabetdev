@@ -10,8 +10,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 |---|---|---|---|---|
 | **0** | Criar fork + GitHub repo + porta 5003 | ✅ Concluída | ✅ 2026-05-12 | `adf3817` |
 | **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | `5d597e6` |
-| **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | a commitar |
-| **3** | Health Score composto + snapshots | ⚪ Pendente | — | — |
+| **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | `446f45f` |
+| **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | a commitar |
 | **4** | Alertas inteligentes via webhook | ⚪ Pendente | — | — |
 | **5** | AI Chat sobre os dados (Claude API) | ⚪ Pendente | — | — |
 | **6** | Anomalias + grupos empresariais | ⚪ Pendente | — | — |
@@ -61,6 +61,48 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ 11ª req em /api/editar/min retorna HTTP 429
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
+
+### Etapa 3 — Health Score Composto ✅
+
+**Arquivos novos:**
+- `health_score.py` (170 linhas) — função `calcular(reg)` retorna 0-100 composto de URL (25%) + nota RA (25%) + % resolvidas RA (20%) + afiliados (15%) + email (15%)
+
+**`data_manager.py`:**
+- `recarregar()` chama `health_score.aplicar_em_lote(dados)` após os merges
+- Cada registro ganha `_health_score` (int 0-100) e `_health_score_classe` (excelente/bom/regular/ruim/critico)
+
+**`app.py`:**
+- `_aplicar_filtros_query()` aceita novo param `score_min` (filtro backend por score ≥ X)
+
+**`stats_snapshot.py`:**
+- `_calcular_stats()` agora inclui `score_medio`, `score_mediana`, `score_excelente`, `score_critico`
+- Snapshot diário guarda evolução do score médio ao longo do tempo
+
+**`url_health.py`:**
+- Bugfix: `_listar_urls()` agora filtra chaves `_schema_version` etc. (overrides ganhou metadata na etapa 2)
+
+**Frontend:**
+- Nova coluna **"Score"** ordenável na tabela (entre Reclame Aqui e UF)
+- Função JS `badgeScore(r)` com tooltip explicativo (URL/RA/afiliados/email)
+- Novo filtro **"Score"** na barra: Excelente ≥80, Bom ≥65, Regular ≥50, Críticos <30
+- 6 classes CSS de badge gradiente verde→vermelho
+- Colspan empty-state: 14 → 15
+
+**Distribuição real (n=186 bets):**
+- ⭐ Excelente (≥80): 2  (F12.BET 85, H2 BET 83)
+- 👍 Bom (≥65): 27
+- ≈ Regular (≥50): 64
+- 👎 Ruim (≥30): 78
+- ⚠ Crítico (<30): 15
+
+**Validação:**
+- ✅ `pytest tests/` — **51/51 passing** (7 novos testes em `TestHealthScore`)
+- ✅ Mypy: Success no issues found em 5 módulos
+- ✅ Filtro `?score_min=80` reduz para 3 bets (correto)
+- ✅ BETANO (URL bloqueado, sem email): 67 — penaliza falta de email + bot-block
+- ✅ F12.BET (tudo ok + RA1000 9.7 + afil sim): 85
+
+---
 
 ### Etapa 2 — Modularização ✅
 

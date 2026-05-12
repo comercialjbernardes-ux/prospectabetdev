@@ -83,7 +83,11 @@ def _listar_urls() -> list[str]:
         if u and u.startswith(("http://", "https://")):
             urls.add(u)
 
-    for ov in (json_store.ler(ARQUIVO_OVERRIDES, default={}) or {}).values():
+    ov_raw = json_store.ler(ARQUIVO_OVERRIDES, default={}) or {}
+    for chave, ov in ov_raw.items():
+        # Ignora metadados do schema (ex: '_schema_version', '_salvo_em')
+        if chave.startswith("_") or not isinstance(ov, dict):
+            continue
         u = (ov.get("url") or "").strip()
         if u and u.startswith(("http://", "https://")):
             urls.add(u)

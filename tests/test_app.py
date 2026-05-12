@@ -356,3 +356,90 @@ class TestNotificacoes:
         ok, msg = notificacoes.disparar_teste()
         assert ok is False
         assert 'URL' in msg or 'url' in msg.lower() or 'configurad' in msg.lower()
+
+
+# ---------------------------------------------------------------------------
+# Testes do health_score (etapa 3.1)
+# ---------------------------------------------------------------------------
+
+class TestHealthScore:
+
+    def test_betano_ra1000_excelente(self):
+        from health_score import calcular, classificar
+        reg = {
+            '_url_health_status': 'ok', '_url_inativa': False,
+            '_ra_nota': 9.0, '_ra_resolvidas': 99.6, '_ra_ra1000': True,
+            '_ra_status': 'encontrado',
+            '_afiliados_display': 'nao_encontrado',
+            'email_contato': 'contato@betano.bet.br',
+        }
+        s = calcular(reg)
+        assert s >= 85
+        assert classificar(s) == 'excelente'
+
+    def test_bet_inativa_sem_dados_critico_ou_ruim(self):
+        from health_score import calcular
+        reg = {
+            '_url_health_status': 'erro_conexao', '_url_inativa': True,
+            '_ra_status': 'desconhecido',
+            '_afiliados_display': 'nao_encontrado',
+            'email_contato': '',
+        }
+        s = calcular(reg)
+        assert s <= 35
+
+    def test_classificacao_limites(self):
+        from health_score import classificar
+        assert classificar(90) == 'excelente'
+        assert classificar(80) == 'excelente'
+        assert classificar(70) == 'bom'
+        assert classificar(65) == 'bom'
+        assert classificar(50) == 'regular'
+        assert classificar(30) == 'ruim'
+        assert classificar(29) == 'critico'
+        assert classificar(0)  == 'critico'
+
+    def test_aplicar_em_lote_escreve_campos(self):
+        from health_score import aplicar_em_lote
+        dados = [
+            {'_url_health_status': 'ok', '_ra_nota': 7.0, '_afiliados_display': 'sim',
+             'email_contato': 'x@y.com'},
+            {'_url_health_status': 'erro_conexao', '_url_inativa': True,
+             '_afiliados_display': 'nao', 'email_contato': ''},
+        ]
+        aplicar_em_lote(dados)
+        assert '_health_score' in dados[0]
+        assert '_health_score_classe' in dados[0]
+        assert dados[0]['_health_score'] > dados[1]['_health_score']
+
+    def test_ra1000_bonus(self):
+        """RA1000 deve aumentar levemente o score (+5 na nota)."""
+        from health_score import calcular
+        base = {
+            '_url_health_status': 'ok', '_ra_nota': 9.0, '_ra_resolvidas': 95.0,
+            '_ra_status': 'encontrado', '_afiliados_display': 'nao_encontrado',
+            'email_contato': 'x@y.com',
+        }
+        sem_ra1000 = calcular({**base, '_ra_ra1000': False})
+        com_ra1000 = calcular({**base, '_ra_ra1000': True})
+        assert com_ra1000 >= sem_ra1000
+
+    def test_filtro_score_min_no_aplicar_filtros_query(self):
+        from app import _aplicar_filtros_query
+        dados = [
+            {'_health_score': 85, 'marca': 'BetA'},
+            {'_health_score': 60, 'marca': 'BetB'},
+            {'_health_score': 25, 'marca': 'BetC'},
+        ]
+        result = _aplicar_filtros_query(dados, {'score_min': '70'})
+        assert len(result) == 1
+        assert result[0]['marca'] == 'BetA'
+
+    def test_estatisticas_agregadas(self):
+        from health_score import estatisticas
+        dados = [{'_health_score': s} for s in [85, 70, 60, 30, 10]]
+        s = estatisticas(dados)
+        assert s['min']  == 10
+        assert s['max']  == 85
+        assert s['por_classe']['excelente'] == 1
+        assert s['por_classe']['critico']   == 1

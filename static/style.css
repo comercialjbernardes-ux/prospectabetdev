@@ -1721,3 +1721,35 @@ body.sidebar-collapsed .main-wrapper {
 .badge-success { background: var(--success-bg); color: var(--success); }
 .badge-danger  { background: var(--danger-bg);  color: var(--danger);  }
 .badge-neutral { background: var(--bg-2);       color: var(--text-muted); }
+
+/* ============================================================================
+   HEALTH SCORE — badge composto 0-100 (etapa 3.2)
+   Cores graduam de verde (excelente) a vermelho (crítico).
+   ============================================================================ */
+.score-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+  cursor: default;
+  transition: var(--t-fast);
+}
+.score-badge:hover { transform: scale(1.05); box-shadow: var(--shadow-sm); }
+
+.score-excelente { background: rgba(22,163,74,.16);   color: #15803d; }   /* verde forte */
+.score-bom       { background: rgba(132,204,22,.20);  color: #4d7c0f; }   /* verde-limão */
+.score-regular   { background: rgba(251,191,36,.22);  color: #b45309; }   /* amarelo */
+.score-ruim      { background: rgba(249,115,22,.18);  color: #c2410c; }   /* laranja */
+.score-critico   { background: rgba(225,29,72,.18);   color: #be123c; }   /* vermelho */
+.score-nd        { background: rgba(148,163,184,.12); color: #94a3b8; }   /* cinza */
