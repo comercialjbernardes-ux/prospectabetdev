@@ -27,6 +27,11 @@ from urllib.parse import urlparse
 
 import requests
 import json_store
+from logging_config import get_logger
+from worker_utils import CircuitBreaker
+
+logger = get_logger(__name__)
+_circuit_breaker = CircuitBreaker("url_health", logger=logger)
 
 # ---------------------------------------------------------------------------
 # Parâmetros
@@ -376,16 +381,26 @@ def _tick() -> int:
 
 
 def _loop() -> None:
-    print(f"[url_health] worker iniciado — tick={TICK_SEGUNDOS}s · "
-          f"fatia={URLS_POR_TICK} · workers={WORKERS}")
+    logger.info(f"[url_health] worker iniciado — tick={TICK_SEGUNDOS}s · "
+                f"fatia={URLS_POR_TICK} · workers={WORKERS}")
     while True:
+        if _circuit_breaker.deve_pausar():
+            # Circuito aberto: dorme até reabrir, mas em pedaços de até 30s
+            time.sleep(min(30, max(1, _circuit_breaker.segundos_restantes())))
+            continue
         try:
             n = _tick()
+            _circuit_breaker.registrar_sucesso()
             if n:
-                print(f"[url_health] tick: {n} URLs validadas")
+                logger.info(f"[url_health] tick: {n} URLs validadas")
         except Exception as e:
-            print(f"[url_health] erro no tick: {e}")
+            _circuit_breaker.registrar_falha(e)
         time.sleep(TICK_SEGUNDOS)
+
+
+def estado_circuit_breaker() -> dict:
+    """Expõe estado atual do circuit breaker (para /health endpoint)."""
+    return _circuit_breaker.estado()
 
 
 # ---------------------------------------------------------------------------

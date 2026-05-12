@@ -8,8 +8,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 
 | Etapa | Descrição | Status | Validado pelo usuário | Commit |
 |---|---|---|---|---|
-| **0** | Criar fork + GitHub repo + porta 5003 | 🟡 Em andamento | — | — |
-| **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ⚪ Pendente | — | — |
+| **0** | Criar fork + GitHub repo + porta 5003 | ✅ Concluída | ✅ 2026-05-12 | `adf3817` |
+| **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | a commitar |
 | **2** | Modularização (`data_manager.py`, `audit.py`, type hints) | ⚪ Pendente | — | — |
 | **3** | Health Score composto + snapshots | ⚪ Pendente | — | — |
 | **4** | Alertas inteligentes via webhook | ⚪ Pendente | — | — |
@@ -29,7 +29,38 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - `README.md` — substituído pelo README do fork (DEV)
 - `MIGRACAO.md` — **NOVO**, este arquivo
 
-### Etapa 1 — (a preencher após execução)
+### Etapa 1 — Quick-wins técnicos ✅
+
+**Arquivos novos:**
+- `worker_utils.py` — classe `CircuitBreaker` reutilizável (backoff exponencial 5/10/20/60min após 3 falhas seguidas)
+
+**`app.py`:**
+- Imports top-level: `stats_snapshot`, `notificacoes` (eram lazy)
+- Imports condicionais: `flask_limiter` para rate limiting
+- Inicialização do `Limiter` após `app = Flask(__name__)`
+- Cache TTL+mtime para health JSONs (`_health_cache` + `_ler_health_cached()`)
+- Funções `_aplicar_url_health`, `_aplicar_afiliados_health`, `_aplicar_reclame_aqui_health` usam o cache
+- `recarregar_dados()` chama `_invalidar_cache_health()` e atualiza `_ultima_recarga_ts`
+- Nova rota **`/health`** com status agregado (ok/degraded/critical), info por worker, idade dos arquivos, estado dos circuit breakers
+- `/api/editar` ganhou `@limiter.limit("10 per minute")` → retorna 429 após 10 reqs/min/IP
+- `/api/snapshots`, `/api/notificacoes/*` usam módulos top-level (sem mais `import` dentro de função)
+
+**`url_health.py`, `afiliados_health.py`, `reclame_aqui_health.py`:**
+- Cada um cria `_circuit_breaker = CircuitBreaker(nome)`
+- `_loop()` checa `deve_pausar()` antes de cada tick
+- `_tick()` envolvido por `try/except` → `registrar_sucesso()` ou `registrar_falha()`
+- Cada um expõe `estado_circuit_breaker()` consumido pelo `/health`
+- Substituição de `print()` por `logger.info()`/`logger.error()`
+
+**`requirements.txt`:**
+- Nova dependência: `Flask-Limiter>=3.5.0`
+
+**Validação:**
+- ✅ `pytest tests/test_app.py` — 44/44 passing
+- ✅ `curl /health` retorna JSON com 4 workers (todos `alive`)
+- ✅ 11ª req em /api/editar/min retorna HTTP 429
+- ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
+- ✅ Principal (5002) continua rodando sem alteração
 
 ### Etapa 2 — (a preencher após execução)
 

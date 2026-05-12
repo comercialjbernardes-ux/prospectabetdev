@@ -4,6 +4,7 @@
 # ── Servidor WSGI ────────────────────────────────────────────────────────────
 Flask>=3.0.0
 waitress>=3.0.0
+Flask-Limiter>=3.5.0       # Rate limiting em endpoints sensíveis (etapa 1.4)
 
 # ── HTTP / Scraping ──────────────────────────────────────────────────────────
 requests>=2.31.0

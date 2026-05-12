@@ -27,6 +27,12 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 
+from logging_config import get_logger
+from worker_utils import CircuitBreaker
+
+logger = get_logger(__name__)
+_circuit_breaker = CircuitBreaker("reclame_aqui", logger=logger)
+
 # ---------------------------------------------------------------------------
 # Parâmetros
 # ---------------------------------------------------------------------------
@@ -424,20 +430,28 @@ def _tick() -> tuple[int, int]:
 
 
 def _loop() -> None:
-    print(
+    logger.info(
         f"[reclame_aqui] worker iniciado — tick={TICK_SEGUNDOS}s · "
         f"fatia={MARCAS_POR_TICK} · workers={WORKERS} · "
         f"re-check={INTERVALO_RE_CHECK//3600}h · "
         f"curl_cffi={'ok' if _CURL_CFFI_OK else 'AUSENTE'}"
     )
     while True:
+        if _circuit_breaker.deve_pausar():
+            time.sleep(min(30, max(1, _circuit_breaker.segundos_restantes())))
+            continue
         try:
             n, enc = _tick()
+            _circuit_breaker.registrar_sucesso()
             if n:
-                print(f"[reclame_aqui] tick: {n} marcas checadas, {enc} encontradas no RA")
+                logger.info(f"[reclame_aqui] tick: {n} marcas checadas, {enc} encontradas no RA")
         except Exception as e:
-            print(f"[reclame_aqui] erro no tick: {e}")
+            _circuit_breaker.registrar_falha(e)
         time.sleep(TICK_SEGUNDOS)
+
+
+def estado_circuit_breaker() -> dict:
+    return _circuit_breaker.estado()
 
 
 # ---------------------------------------------------------------------------

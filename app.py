@@ -32,6 +32,16 @@ from logging_config import get_logger
 
 logger = get_logger(__name__)
 
+# Rate limiting (etapa 1.4)
+try:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    _RATE_LIMIT_DISPONIVEL = True
+except ImportError:
+    Limiter = None  # type: ignore
+    get_remote_address = lambda: "127.0.0.1"  # type: ignore
+    _RATE_LIMIT_DISPONIVEL = False
+
 import url_health
 import csv_sync
 
@@ -48,6 +58,21 @@ except ImportError:
     _ra_health = None  # type: ignore
     _RA_HEALTH_DISPONIVEL = False
 
+# Módulos auxiliares — top-level (antes eram importados lazy dentro de funções)
+try:
+    import stats_snapshot
+    _STATS_SNAPSHOT_DISPONIVEL = True
+except ImportError:
+    stats_snapshot = None  # type: ignore
+    _STATS_SNAPSHOT_DISPONIVEL = False
+
+try:
+    import notificacoes
+    _NOTIFICACOES_DISPONIVEL = True
+except ImportError:
+    notificacoes = None  # type: ignore
+    _NOTIFICACOES_DISPONIVEL = False
+
 # Playwright disponível?
 try:
     from playwright.sync_api import sync_playwright as _pw  # noqa: F401
@@ -56,6 +81,19 @@ except ImportError:
     _PLAYWRIGHT_DISPONIVEL = False
 
 app = Flask(__name__)
+
+# Rate limiter — protege endpoints sensíveis de abuso/DoS (etapa 1.4)
+if _RATE_LIMIT_DISPONIVEL:
+    limiter = Limiter(
+        get_remote_address,
+        app=app,
+        default_limits=[],           # sem limite global; apenas em rotas marcadas
+        storage_uri="memory://",     # storage in-memory (suficiente p/ instância única)
+        headers_enabled=True,        # adiciona X-RateLimit-* headers
+    )
+else:
+    limiter = None  # type: ignore
+    logger.warning("Flask-Limiter não instalado — rate limiting desabilitado")
 
 ARQUIVO_JSON      = Path("dados/bets_enriquecidas.json")
 ARQUIVO_CSV       = Path("bets_com_emails.csv")
@@ -94,6 +132,14 @@ _AUDIT_LOCK = Lock()
 _stats_cache: dict = {"data": None, "ts": 0.0}
 _stats_lock  = Lock()
 
+# Cache TTL + mtime para os arquivos *_health.json
+# Evita re-ler do disco a cada request — economiza I/O em /api/dados e /api/stats.
+# Chave: identificador lógico ('url', 'afiliados', 'ra'); valor: (ts_monotonic, mtime, data)
+_health_cache: dict = {}
+_health_cache_lock = Lock()
+_HEALTH_CACHE_TTL = 10.0   # segundos
+_ultima_recarga_ts: float = 0.0
+
 
 def _snapshot_dados() -> list[dict]:
     """Retorna cópia thread-safe de _dados (evita race condition com workers)."""
@@ -104,6 +150,46 @@ def _snapshot_dados() -> list[dict]:
 def _invalidar_cache_stats() -> None:
     with _stats_lock:
         _stats_cache["ts"] = 0.0
+
+
+def _invalidar_cache_health() -> None:
+    """Limpa o cache TTL dos health JSONs (chamado em recarregar_dados)."""
+    with _health_cache_lock:
+        _health_cache.clear()
+
+
+def _ler_health_cached(chave: str, path: Path, reader=None) -> dict:
+    """
+    Leitura com cache TTL 10s + invalidação por mtime.
+
+    :param chave: identificador único (ex: 'url', 'afiliados', 'ra')
+    :param path:  caminho do arquivo JSON (para checar mtime e existência)
+    :param reader: callable opcional que faz a leitura real (ex: url_health.ler_health).
+                   Se None, usa json.loads(path.read_text("utf-8")).
+    :returns: dict com os dados; {} em qualquer falha.
+    """
+    if not path.exists():
+        return {}
+    try:
+        mtime = path.stat().st_mtime
+    except OSError:
+        return {}
+    agora = time.monotonic()
+    with _health_cache_lock:
+        cached = _health_cache.get(chave)
+        if cached and cached[1] == mtime and (agora - cached[0]) < _HEALTH_CACHE_TTL:
+            return cached[2]
+    # Cache miss — lê do disco
+    try:
+        data = reader() if reader is not None else json.loads(path.read_text("utf-8"))
+    except Exception:
+        logger.exception(f"Falha lendo health '{chave}' de {path}")
+        return {}
+    if not isinstance(data, dict):
+        data = {}
+    with _health_cache_lock:
+        _health_cache[chave] = (agora, mtime, data)
+    return data
 
 
 # ---------------------------------------------------------------------------
@@ -294,15 +380,12 @@ def _display_afiliados(status: str) -> str:
 
 def _aplicar_afiliados_health(registros: list[dict]) -> None:
     path = Path("dados/afiliados_health.json")
-    if not path.exists():
+    dados_h = _ler_health_cached("afiliados", path)
+    if not dados_h:
         for r in registros:
             if r.get("_afiliados_status") != "encontrado_manual":
                 if "_afiliados_display" not in r:
                     r["_afiliados_display"] = "nao_encontrado"
-        return
-    try:
-        dados_h = json.loads(path.read_text("utf-8"))
-    except Exception:
         return
     for r in registros:
         if r.get("_afiliados_status") == "encontrado_manual":
@@ -325,10 +408,11 @@ def _aplicar_reclame_aqui_health(registros: list[dict]) -> None:
         for r in registros:
             r.setdefault("_ra_status", "desconhecido")
         return
-    try:
-        dados_h = _ra_health.ler_health()
-    except Exception:
-        dados_h = {}
+    dados_h = _ler_health_cached(
+        "ra",
+        Path("dados/reclame_aqui_health.json"),
+        reader=_ra_health.ler_health,
+    )
     for r in registros:
         slug = _ra_health.slug_para_marca(r.get("marca") or "")
         info = dados_h.get(slug)
@@ -346,10 +430,11 @@ def _aplicar_reclame_aqui_health(registros: list[dict]) -> None:
 
 
 def _aplicar_url_health(registros: list[dict]) -> None:
-    try:
-        health = url_health.ler_health()
-    except Exception:
-        health = {}
+    health = _ler_health_cached(
+        "url",
+        Path("dados/url_health.json"),
+        reader=url_health.ler_health,
+    )
     for r in registros:
         u    = (r.get("url") or "").strip()
         info = health.get(u)
@@ -375,7 +460,8 @@ def _aplicar_url_health(registros: list[dict]) -> None:
 
 
 def recarregar_dados() -> None:
-    global _dados, _overrides
+    global _dados, _overrides, _ultima_recarga_ts
+    _invalidar_cache_health()    # garante leitura fresca dos health JSONs
     _overrides = _carregar_overrides()
     dados = _carregar_dados()
     _aplicar_overrides(dados, _overrides)
@@ -384,13 +470,14 @@ def recarregar_dados() -> None:
     _aplicar_reclame_aqui_health(dados)
     with _dados_lock:
         _dados = dados
+    _ultima_recarga_ts = time.time()
     _invalidar_cache_stats()
     # Salva snapshot diário de stats (para sparklines)
-    try:
-        import stats_snapshot
-        stats_snapshot.registrar_snapshot_se_necessario(dados)
-    except Exception:
-        pass
+    if _STATS_SNAPSHOT_DISPONIVEL:
+        try:
+            stats_snapshot.registrar_snapshot_se_necessario(dados)
+        except Exception:
+            logger.exception("Falha ao registrar snapshot")
 
 
 # ---------------------------------------------------------------------------
@@ -821,9 +908,12 @@ def api_audit_log():
 
 
 @app.route("/api/editar", methods=["POST"])
+@(limiter.limit("10 per minute") if _RATE_LIMIT_DISPONIVEL else (lambda f: f))
 def api_editar():
     """
     Edita um campo de um registro.
+
+    Rate limit: 10 edições/minuto por IP (etapa 1.4 — protege contra abuso/DoS).
 
     Body JSON:
         {"cnpj": "12345678000100", "campo": "email_contato", "valor": "x@y.com"}
@@ -899,12 +989,12 @@ def api_editar():
     )
 
     # Dispara notificação se configurada
-    try:
-        import notificacoes
-        notificacoes.notificar_edicao(cnpj=cnpj, campo=campo,
-                                      valor_anterior=valor_anterior, valor_novo=valor)
-    except Exception:
-        pass
+    if _NOTIFICACOES_DISPONIVEL:
+        try:
+            notificacoes.notificar_edicao(cnpj=cnpj, campo=campo,
+                                          valor_anterior=valor_anterior, valor_novo=valor)
+        except Exception:
+            logger.exception("Falha ao disparar notificação")
 
     atualizado = next(
         (r for r in _snapshot_dados() if (r.get("cnpj") or "").strip() == cnpj), None
@@ -1024,18 +1114,21 @@ def api_exportar():
 @app.route("/api/snapshots")
 def api_snapshots():
     """Retorna histórico diário de KPIs para sparklines dinâmicas."""
+    if not _STATS_SNAPSHOT_DISPONIVEL:
+        return jsonify([])
     try:
-        import stats_snapshot
         return jsonify(stats_snapshot.ler_snapshots())
     except Exception:
+        logger.exception("Falha ao ler snapshots")
         return jsonify([])
 
 
 @app.route("/api/notificacoes/config", methods=["GET", "POST"])
 def api_notificacoes_config():
     """GET retorna config atual; POST atualiza."""
+    if not _NOTIFICACOES_DISPONIVEL:
+        return jsonify({"erro": "Módulo notificacoes indisponível"}), 503
     try:
-        import notificacoes
         if request.method == "POST":
             nova = request.get_json(silent=True) or {}
             notificacoes.salvar_config(nova)
@@ -1048,12 +1141,95 @@ def api_notificacoes_config():
 @app.route("/api/notificacoes/teste", methods=["POST"])
 def api_notificacoes_teste():
     """Dispara um webhook de teste com payload de exemplo."""
+    if not _NOTIFICACOES_DISPONIVEL:
+        return jsonify({"ok": False, "mensagem": "Módulo notificacoes indisponível"}), 503
     try:
-        import notificacoes
         ok, msg = notificacoes.disparar_teste()
         return jsonify({"ok": ok, "mensagem": msg})
     except Exception as e:
         return jsonify({"ok": False, "mensagem": str(e)}), 500
+
+
+@app.route("/health")
+def health():
+    """
+    Health check agregado — pensado para monitoramento externo / alerting.
+
+    Retorna:
+      status: "ok" | "degraded" | "critical"
+      workers: dict por worker → {alive, file_age_seg, ultimo_check}
+      ultima_recarga_dados: ISO timestamp
+      uptime_segundos: segundos desde recarga inicial
+    """
+    import sys as _sys
+    agora = time.time()
+
+    workers_info = {}
+
+    def _info_worker(nome: str, mod, arquivo_health: Path) -> dict:
+        thread = getattr(mod, "_thread_ref", None) if mod else None
+        alive  = bool(thread and thread.is_alive())
+        idade  = None
+        if arquivo_health.exists():
+            try:
+                idade = round(agora - arquivo_health.stat().st_mtime)
+            except OSError:
+                idade = None
+        # Estado do circuit breaker (se o worker expõe estado_circuit_breaker)
+        cb_estado = None
+        if mod is not None:
+            getter = getattr(mod, "estado_circuit_breaker", None)
+            if callable(getter):
+                try:
+                    cb_estado = getter()
+                except Exception:
+                    cb_estado = None
+        return {
+            "alive":           alive,
+            "arquivo_idade_s": idade,   # None se arquivo não existe
+            "arquivo_existe":  arquivo_health.exists(),
+            "circuit_breaker": cb_estado,
+        }
+
+    workers_info["url_health"]     = _info_worker("url_health",     url_health,     Path("dados/url_health.json"))
+    workers_info["csv_sync"]       = _info_worker("csv_sync",       csv_sync,       Path("dados/csv_sync_status.json"))
+    workers_info["afiliados"]      = _info_worker("afiliados",      afiliados_health if _AFILIADOS_HEALTH_DISPONIVEL else None, Path("dados/afiliados_health.json"))
+    workers_info["reclame_aqui"]   = _info_worker("reclame_aqui",   _ra_health      if _RA_HEALTH_DISPONIVEL        else None, Path("dados/reclame_aqui_health.json"))
+
+    # Determina status agregado
+    workers_essenciais = ["url_health", "csv_sync"]
+    workers_secundarios = ["afiliados", "reclame_aqui"]
+
+    essenciais_mortos  = sum(1 for k in workers_essenciais  if not workers_info[k]["alive"])
+    secundarios_mortos = sum(1 for k in workers_secundarios if not workers_info[k]["alive"])
+
+    # Arquivos health "velhos" (> 1h = 3600s) também indicam degradação
+    arquivos_velhos = sum(
+        1 for k, info in workers_info.items()
+        if info["alive"] and info["arquivo_idade_s"] is not None and info["arquivo_idade_s"] > 3600
+    )
+
+    # Algum circuit breaker aberto? (worker pausado por falhas seguidas)
+    cb_abertos = sum(
+        1 for info in workers_info.values()
+        if info.get("circuit_breaker") and info["circuit_breaker"].get("em_pausa")
+    )
+
+    if essenciais_mortos > 0:
+        status_agregado = "critical"
+    elif secundarios_mortos > 0 or arquivos_velhos > 0 or cb_abertos > 0:
+        status_agregado = "degraded"
+    else:
+        status_agregado = "ok"
+
+    return jsonify({
+        "status":                status_agregado,
+        "workers":               workers_info,
+        "ultima_recarga_dados":  datetime.fromtimestamp(_ultima_recarga_ts).isoformat(timespec="seconds") if _ultima_recarga_ts else None,
+        "segundos_desde_recarga": round(agora - _ultima_recarga_ts) if _ultima_recarga_ts else None,
+        "total_registros":       len(_dados),
+        "python":                _sys.version.split()[0],
+    }), (200 if status_agregado == "ok" else 503 if status_agregado == "critical" else 200)
 
 
 @app.route("/api/sistema")

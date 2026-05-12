@@ -29,6 +29,11 @@ from datetime import datetime
 from pathlib import Path
 
 import requests
+from logging_config import get_logger
+from worker_utils import CircuitBreaker
+
+logger = get_logger(__name__)
+_circuit_breaker = CircuitBreaker("afiliados_health", logger=logger)
 
 # ---------------------------------------------------------------------------
 # Parâmetros
@@ -180,16 +185,24 @@ def _tick() -> tuple[int, int]:
 
 
 def _loop() -> None:
-    print(f"[afiliados_health] worker iniciado — tick={TICK_SEGUNDOS}s · "
-          f"fatia={URLS_POR_TICK} · workers={WORKERS}")
+    logger.info(f"[afiliados_health] worker iniciado — tick={TICK_SEGUNDOS}s · "
+                f"fatia={URLS_POR_TICK} · workers={WORKERS}")
     while True:
+        if _circuit_breaker.deve_pausar():
+            time.sleep(min(30, max(1, _circuit_breaker.segundos_restantes())))
+            continue
         try:
             n, det = _tick()
+            _circuit_breaker.registrar_sucesso()
             if n:
-                print(f"[afiliados_health] tick: {n} bets checadas, {det} com afiliados")
+                logger.info(f"[afiliados_health] tick: {n} bets checadas, {det} com afiliados")
         except Exception as e:
-            print(f"[afiliados_health] erro no tick: {e}")
+            _circuit_breaker.registrar_falha(e)
         time.sleep(TICK_SEGUNDOS)
+
+
+def estado_circuit_breaker() -> dict:
+    return _circuit_breaker.estado()
 
 
 # ---------------------------------------------------------------------------
