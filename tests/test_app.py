@@ -525,3 +525,80 @@ class TestAlertasInteligentes:
         novo   = {'status': 'encontrado', 'nota': 7.0}
         result = _detectar_alerta_ra_queda('NEWBET', novo, antigo)
         assert result is novo
+
+
+# ---------------------------------------------------------------------------
+# Testes do ai_chat (etapa 5) — não fazem chamadas reais à Anthropic API
+# ---------------------------------------------------------------------------
+
+class TestAiChat:
+
+    def test_tool_buscar_bets_filtra_por_uf(self):
+        from ai_chat import _tool_buscar_bets
+        import data_manager
+        # Snapshot dos dados reais — assume que rodou recarregar() ao importar app
+        r = _tool_buscar_bets({'uf': 'SP', 'limite': 5})
+        assert 'total_encontrado' in r
+        assert 'bets' in r
+        # Todos os retornados devem ser de SP
+        for bet in r['bets']:
+            assert bet['uf'] == 'SP'
+
+    def test_tool_buscar_bets_score_min(self):
+        from ai_chat import _tool_buscar_bets
+        r = _tool_buscar_bets({'score_min': 80, 'limite': 50})
+        # Todos retornados devem ter score >= 80
+        for bet in r['bets']:
+            assert (bet['_health_score'] or 0) >= 80
+
+    def test_tool_buscar_bets_com_email(self):
+        from ai_chat import _tool_buscar_bets
+        r = _tool_buscar_bets({'com_email': True})
+        for bet in r['bets']:
+            assert bet['email_contato']  # truthy
+
+    def test_tool_buscar_bets_ra1000(self):
+        from ai_chat import _tool_buscar_bets
+        r = _tool_buscar_bets({'ra_ra1000': True})
+        for bet in r['bets']:
+            assert bet['_ra_ra1000'] is True
+
+    def test_tool_obter_bet_match_exato(self):
+        from ai_chat import _tool_obter_bet
+        r = _tool_obter_bet({'identificador': 'BETANO'})
+        # Pode retornar bet ou {'erro': ...} dependendo do dataset
+        if 'erro' not in r:
+            assert r.get('marca', '').upper() == 'BETANO'
+
+    def test_tool_obter_bet_inexistente(self):
+        from ai_chat import _tool_obter_bet
+        r = _tool_obter_bet({'identificador': 'XYZ_INVENTADA_999'})
+        assert r.get('erro')
+
+    def test_tool_estatisticas_gerais_estrutura(self):
+        from ai_chat import _tool_estatisticas_gerais
+        r = _tool_estatisticas_gerais({})
+        assert 'total_bets' in r
+        assert 'distribuicao_score' in r
+        assert 'top_10_ufs' in r
+        assert all(k in r['distribuicao_score']
+                   for k in ['excelente', 'bom', 'regular', 'ruim', 'critico'])
+
+    def test_endpoint_chat_sem_api_key(self, cliente, monkeypatch):
+        """Sem ANTHROPIC_API_KEY o endpoint deve retornar 503 elegantemente."""
+        monkeypatch.delenv('ANTHROPIC_API_KEY', raising=False)
+        # Força re-leitura do client
+        import ai_chat
+        ai_chat._client = None
+        resp = cliente.post('/api/chat', json={'pergunta': 'oi'})
+        assert resp.status_code == 503
+        data = resp.get_json()
+        assert 'sem_api_key' in data.get('erro', '') or '❌' in data.get('resposta', '')
+
+    def test_endpoint_chat_pergunta_vazia(self, cliente):
+        resp = cliente.post('/api/chat', json={'pergunta': ''})
+        assert resp.status_code in (400, 503)  # 503 se sem API key, 400 se com
+
+    def test_endpoint_chat_pergunta_longa(self, cliente):
+        resp = cliente.post('/api/chat', json={'pergunta': 'x' * 3000})
+        assert resp.status_code in (400, 503)

@@ -14,6 +14,9 @@ beautifulsoup4>=4.12.0     # Parser HTML (lazy-imported)
 # ── Dados e exportação ───────────────────────────────────────────────────────
 openpyxl>=3.1.0            # Export XLSX server-side (/api/exportar)
 
+# ── AI Chat (etapa 5) ────────────────────────────────────────────────────────
+anthropic>=0.40.0          # Claude API client (tool use + prompt caching)
+
 # ── Playwright (opcional) ────────────────────────────────────────────────────
 # playwright>=1.40.0       # Descomente e rode: playwright install chromium
 

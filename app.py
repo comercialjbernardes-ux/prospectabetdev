@@ -73,6 +73,13 @@ except ImportError:
     notificacoes = None  # type: ignore
     _NOTIFICACOES_DISPONIVEL = False
 
+try:
+    import ai_chat
+    _AI_CHAT_DISPONIVEL = True
+except ImportError:
+    ai_chat = None  # type: ignore
+    _AI_CHAT_DISPONIVEL = False
+
 # Playwright disponÃ­vel?
 try:
     from playwright.sync_api import sync_playwright as _pw  # noqa: F401
@@ -740,6 +747,49 @@ def api_notificacoes_teste():
         return jsonify({"ok": ok, "mensagem": msg})
     except Exception as e:
         return jsonify({"ok": False, "mensagem": str(e)}), 500
+
+
+@app.route("/api/chat", methods=["POST"])
+@(limiter.limit("20 per minute") if _RATE_LIMIT_DISPONIVEL else (lambda f: f))
+def api_chat():
+    """
+    Chat AI sobre os dados (etapa 5).
+    Body: {"pergunta": "...", "historico": [...optional]}
+    Retorna: {"resposta": "markdown text", "tokens_input": N, "cache_read": N, ...}
+    Rate limit: 20 req/min/IP.
+    """
+    if not _AI_CHAT_DISPONIVEL:
+        return jsonify({
+            "erro": "indisponivel",
+            "resposta": "❌ Módulo ai_chat não foi carregado. Instale o pacote 'anthropic'.",
+        }), 503
+    if not ai_chat.disponivel():
+        return jsonify({
+            "erro": "sem_api_key",
+            "resposta": "❌ ANTHROPIC_API_KEY não está configurada no servidor. "
+                        "Configure a variável de ambiente para habilitar o chat.",
+        }), 503
+
+    body = request.get_json(silent=True) or {}
+    pergunta = (body.get("pergunta") or "").strip()
+    historico = body.get("historico") or []
+
+    if not pergunta:
+        return jsonify({"erro": "pergunta_vazia", "resposta": "Envie uma pergunta no campo 'pergunta'."}), 400
+    if len(pergunta) > 2000:
+        return jsonify({"erro": "pergunta_longa", "resposta": "Pergunta muito longa (máx 2000 caracteres)."}), 400
+    if not isinstance(historico, list) or len(historico) > 20:
+        return jsonify({"erro": "historico_invalido", "resposta": "Histórico inválido ou muito longo (máx 20 mensagens)."}), 400
+
+    try:
+        resultado = ai_chat.responder(pergunta=pergunta, historico=historico)
+        return jsonify(resultado)
+    except Exception as e:
+        logger.exception("Erro em /api/chat")
+        return jsonify({
+            "erro": "erro_interno",
+            "resposta": f"❌ Erro interno: {e}",
+        }), 500
 
 
 @app.route("/health")

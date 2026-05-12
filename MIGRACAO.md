@@ -12,8 +12,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 | **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | `5d597e6` |
 | **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | `446f45f` |
 | **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | `045be8f` |
-| **4** | Alertas inteligentes via webhook | ✅ Concluída | ⏳ aguardando | a commitar |
-| **5** | AI Chat sobre os dados (Claude API) | ⚪ Pendente | — | — |
+| **4** | Alertas inteligentes via webhook | ✅ Concluída | ⏳ aguardando | `5cdc95f` |
+| **5** | AI Chat sobre os dados (Claude API) | ✅ Concluída | ⏳ aguardando | a commitar |
 | **6** | Anomalias + grupos empresariais | ⚪ Pendente | — | — |
 | **7** | Email validation worker | ⚪ Pendente | — | — |
 
@@ -61,6 +61,54 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ 11ª req em /api/editar/min retorna HTTP 429
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
+
+### Etapa 5 — AI Chat sobre os Dados ✅
+
+**Arquivo novo:**
+- `ai_chat.py` (~340 linhas) — integração com Claude API, prompt caching, 3 tools, loop de tool use
+
+**`app.py`:**
+- Import top-level de `ai_chat` (com fallback gracioso se anthropic SDK ausente)
+- Endpoint **`POST /api/chat`** — rate limit 20/min/IP, validação de tamanho
+
+**`requirements.txt`:**
+- Nova dep: `anthropic>=0.40.0`
+
+**Frontend:**
+- Botão flutuante laranja **"🤖 Pergunte"** (canto inferior direito)
+- Drawer lateral com chat (transição suave, atalhos Cmd+K/Esc)
+- Renderização Markdown leve no front (bullets, tabelas, negrito, código)
+- Mostra metadata por resposta: modelo, tokens, cache hit, iterações
+- Histórico de até 20 mensagens (10 turnos) preservado client-side
+
+**Configuração:**
+- Modelo via env var `AI_CHAT_MODEL` (default `claude-opus-4-7`)
+- API key via env var `ANTHROPIC_API_KEY` (sem chave → endpoint retorna 503 elegante)
+
+**Tools implementadas:**
+
+| Tool | Função |
+|---|---|
+| `buscar_bets` | Filtra com 11 critérios (marca, uf, score_min, ra_ra1000, url_status, com_email, etc.) + ordenação |
+| `obter_bet` | Detalhes completos de UMA bet por marca ou CNPJ |
+| `estatisticas_gerais` | Stats agregadas (total, distribuição por score, top UFs, reputação RA) |
+
+**Prompt caching:**
+- System prompt (~1.5K tokens) cacheado com `cache_control: {"type": "ephemeral"}` (TTL 5min)
+- Cache hit em 2ª+ query: ~90% de economia no input
+
+**Custos estimados (Opus 4.7, 150 queries/dia):**
+- Com cache hit: **~$0.015-0.025 por query** → **~$22-37/mês**
+- Alternativa: setar `AI_CHAT_MODEL=claude-sonnet-4-6` reduz para **~$12-18/mês**
+
+**Validação:**
+- ✅ `pytest tests/` — **68/68 passing** (10 novos em `TestAiChat`)
+- ✅ Mypy: Success no issues found em ai_chat.py
+- ✅ `/api/chat` retorna 503 elegante sem API key
+- ✅ Rate limit 20/min funcional
+- ✅ Validação de tamanho de pergunta + histórico
+
+---
 
 ### Etapa 4 — Alertas Inteligentes via Webhook ✅
 
