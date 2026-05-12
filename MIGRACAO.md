@@ -9,8 +9,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 | Etapa | Descrição | Status | Validado pelo usuário | Commit |
 |---|---|---|---|---|
 | **0** | Criar fork + GitHub repo + porta 5003 | ✅ Concluída | ✅ 2026-05-12 | `adf3817` |
-| **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | a commitar |
-| **2** | Modularização (`data_manager.py`, `audit.py`, type hints) | ⚪ Pendente | — | — |
+| **1** | Quick-wins técnicos (`/health`, cache, circuit breaker, rate limit) | ✅ Concluída | ⏳ aguardando | `5d597e6` |
+| **2** | Modularização (`data_manager.py`, `audit.py`, `export.py`, type hints) | ✅ Concluída | ⏳ aguardando | a commitar |
 | **3** | Health Score composto + snapshots | ⚪ Pendente | — | — |
 | **4** | Alertas inteligentes via webhook | ⚪ Pendente | — | — |
 | **5** | AI Chat sobre os dados (Claude API) | ⚪ Pendente | — | — |
@@ -62,7 +62,30 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
 
-### Etapa 2 — (a preencher após execução)
+### Etapa 2 — Modularização ✅
+
+**Arquivos novos:**
+- `data_manager.py` (400 linhas) — estado global, overrides, carregamento, cache de health, merges (url/afiliados/RA), orquestração `recarregar()`
+- `audit.py` (203 linhas) — append-only JSONL, rotação, leitura paginada com filtros
+- `export.py` (100 linhas) — exportação CSV/XLSX com fallback gracioso
+
+**`app.py` (1286 → 867 linhas, -32%):**
+- Globals (`_dados`, `_overrides`, `_health_cache`, `_ultima_recarga_ts`) → `data_manager`
+- Funções audit (`_rotacionar_audit_log`, `_registrar_auditoria`) → `audit`
+- Função `/auditoria` enxuta: delega para `audit.ler_paginado()`
+- Função `/api/exportar` enxuta: delega para `export.exportar()`
+- Shims preservados para compat (`_display_afiliados`, `_aplicar_overrides`, etc.)
+
+**Type hints + mypy:**
+- `python -m mypy data_manager.py audit.py worker_utils.py export.py --ignore-missing-imports` → **Success: no issues found in 4 source files**
+- `python -m mypy reclame_aqui_health.py --ignore-missing-imports` → **Success: no issues found in 1 source file**
+
+**Validação:**
+- ✅ `pytest tests/test_app.py` — 44/44 passing
+- ✅ `/auditoria` HTTP 200 com listagem de eventos
+- ✅ `/health` HTTP 200 com status dos workers
+- ✅ Edição inline + audit log funcional
+- ✅ Principal (5002) e fork (5003) rodando em paralelo
 
 ### ...
 
