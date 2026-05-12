@@ -1,0 +1,24 @@
+# Prospector Bets — dependências Python
+# Instalar: C:\PythonPortable\python312\python.exe -m pip install -r requirements.txt
+
+# ── Servidor WSGI ────────────────────────────────────────────────────────────
+Flask>=3.0.0
+waitress>=3.0.0
+
+# ── HTTP / Scraping ──────────────────────────────────────────────────────────
+requests>=2.31.0
+curl-cffi>=0.6.0           # HTTP com perfil de browser (anti-bot)
+beautifulsoup4>=4.12.0     # Parser HTML (lazy-imported)
+
+# ── Dados e exportação ───────────────────────────────────────────────────────
+openpyxl>=3.1.0            # Export XLSX server-side (/api/exportar)
+
+# ── Playwright (opcional) ────────────────────────────────────────────────────
+# playwright>=1.40.0       # Descomente e rode: playwright install chromium
+
+# ── Testes ───────────────────────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-mock>=3.12.0
+
+# ── Dev / utilitários ────────────────────────────────────────────────────────
+# python-dotenv>=1.0.0     # .env support (opcional)

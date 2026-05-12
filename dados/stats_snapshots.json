@@ -1,0 +1,68 @@
+[
+  {
+    "data": "2026-05-02",
+    "ts": "2026-05-02T17:47:45",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 8,
+    "editados": 9,
+    "urls_ativas": 64,
+    "urls_inativas": 122
+  },
+  {
+    "data": "2026-05-04",
+    "ts": "2026-05-04T15:34:12",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 7,
+    "editados": 13,
+    "urls_ativas": 64,
+    "urls_inativas": 122
+  },
+  {
+    "data": "2026-05-06",
+    "ts": "2026-05-06T16:28:04",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 7,
+    "editados": 13,
+    "urls_ativas": 64,
+    "urls_inativas": 122
+  },
+  {
+    "data": "2026-05-07",
+    "ts": "2026-05-07T01:39:34",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 17,
+    "editados": 16,
+    "urls_ativas": 64,
+    "urls_inativas": 22
+  },
+  {
+    "data": "2026-05-08",
+    "ts": "2026-05-08T14:33:16",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 17,
+    "editados": 18,
+    "urls_ativas": 64,
+    "urls_inativas": 22
+  },
+  {
+    "data": "2026-05-12",
+    "ts": "2026-05-12T03:11:08",
+    "total": 186,
+    "com_email": 9,
+    "sem_email": 0,
+    "com_afiliados": 17,
+    "editados": 21,
+    "urls_ativas": 64,
+    "urls_inativas": 22
+  }
+]

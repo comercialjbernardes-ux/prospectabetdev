@@ -1,0 +1,1304 @@
+{
+  "https://1pra1.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:32:28"
+  },
+  "https://1xbet.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:22:15"
+  },
+  "https://4play.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:40:08"
+  },
+  "https://4win.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:32:29"
+  },
+  "https://55w.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:33:52"
+  },
+  "https://5g.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:33:52"
+  },
+  "https://6r.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:31:55"
+  },
+  "https://6z.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:33:53"
+  },
+  "https://7games.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:22:09"
+  },
+  "https://7k.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:22:06"
+  },
+  "https://9d.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:38:40"
+  },
+  "https://9f.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://9f.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:35:15"
+  },
+  "https://a definir": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:36:34"
+  },
+  "https://a247.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:18:26"
+  },
+  "https://afun.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:36:34"
+  },
+  "https://ai.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:20:57"
+  },
+  "https://alfa.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:25:21"
+  },
+  "https://aposta.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:35:03"
+  },
+  "https://aposta1.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:03:21"
+  },
+  "https://apostaganha.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:36:14"
+  },
+  "https://apostamax.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:39:15"
+  },
+  "https://apostar.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:39:15"
+  },
+  "https://apostatudo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:39:19"
+  },
+  "https://apostou.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:19:29"
+  },
+  "https://arenaplus.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:04:21"
+  },
+  "https://aviao.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:39:42"
+  },
+  "https://b1bet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:04:23"
+  },
+  "https://bacanaplay.bet.br": {
+    "detectado": true,
+    "status": "encontrado_completo",
+    "url_afiliado": "http://www.egamingonline.com",
+    "email_afiliado": "suporte@bacanaplay.bet.br",
+    "checado_em": "2026-05-12T15:40:53"
+  },
+  "https://bandbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:22:02"
+  },
+  "https://bateu.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:19:28"
+  },
+  "https://bau.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:19:26"
+  },
+  "https://bet365.bet.br": {
+    "detectado": false,
+    "status": "bloqueado_robots",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:20:39"
+  },
+  "https://bet4.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:00:07"
+  },
+  "https://betaki.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:20:41"
+  },
+  "https://betano.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:22:05"
+  },
+  "https://betao.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:38:29"
+  },
+  "https://betapp.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:31:26"
+  },
+  "https://betboo.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:58:50"
+  },
+  "https://betboom.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:22:01"
+  },
+  "https://betbra.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:31:20"
+  },
+  "https://betbuffalos.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:23:17"
+  },
+  "https://betcaixa.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:23:17"
+  },
+  "https://betcopa.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:23:17"
+  },
+  "https://betdasorte.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:20:59"
+  },
+  "https://betespecial.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:23:32"
+  },
+  "https://betesporte.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:24:34"
+  },
+  "https://betfair.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:24:35"
+  },
+  "https://betfalcons.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:26:23"
+  },
+  "https://betfast.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:26:22"
+  },
+  "https://betfusion.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:26:26"
+  },
+  "https://betgo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:27:41"
+  },
+  "https://betgorillas.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:27:41"
+  },
+  "https://betmgm.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:33:48"
+  },
+  "https://betnacional.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:39:48"
+  },
+  "https://betou.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:27:43"
+  },
+  "https://betpix365.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:29:00"
+  },
+  "https://betpontobet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:31:48"
+  },
+  "https://betsson.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:29:26"
+  },
+  "https://betsul.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:39:47"
+  },
+  "https://betvip.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:30:29"
+  },
+  "https://betwarrior.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:26:32"
+  },
+  "https://big.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:42:18"
+  },
+  "https://bingo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:30:31"
+  },
+  "https://bingoplus.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:31:06"
+  },
+  "https://blaze.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:03:39"
+  },
+  "https://bolsadeaposta.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:27:58"
+  },
+  "https://br4.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:31:45"
+  },
+  "https://bra.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:32:59"
+  },
+  "https://brasil.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:41:12"
+  },
+  "https://brasildasorte.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://brasildasorte.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:20:48"
+  },
+  "https://bravo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:34:49"
+  },
+  "https://brazino777.bet.br": {
+    "detectado": true,
+    "status": "encontrado_completo",
+    "url_afiliado": "https://brazpartners.com",
+    "email_afiliado": "support@brazpartners.com",
+    "checado_em": "2026-05-12T16:36:36"
+  },
+  "https://brbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:34:49"
+  },
+  "https://brx.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:34:51"
+  },
+  "https://bullsbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:36:05"
+  },
+  "https://bz.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:36:03"
+  },
+  "https://casadeapostas.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://casadeapostas.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:37:18"
+  },
+  "https://cassino.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:37:19"
+  },
+  "https://cbesportes.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:36:05"
+  },
+  "https://cgg.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:57:16"
+  },
+  "https://donald.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:37:20"
+  },
+  "https://donosdabola.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:37:16"
+  },
+  "https://drbingo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:40:56"
+  },
+  "https://energia.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:38:21"
+  },
+  "https://esporte365.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:38:22"
+  },
+  "https://esportesdasorte.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:38:23"
+  },
+  "https://esportiva.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:26:33"
+  },
+  "https://esportivavip.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:39:42"
+  },
+  "https://estrelabet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:40:56"
+  },
+  "https://f12.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://f12.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:38:04"
+  },
+  "https://fanbit.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:39:44"
+  },
+  "https://faz1.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:40:51"
+  },
+  "https://fazo.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:29:30"
+  },
+  "https://fogo777.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:36:54"
+  },
+  "https://fulltbet.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:26:39"
+  },
+  "https://fybet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:42:12"
+  },
+  "https://galera.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:00:03"
+  },
+  "https://ganhei.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:33:57"
+  },
+  "https://geralbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:42:14"
+  },
+  "https://ginga.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:58:21"
+  },
+  "https://goldebet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:58:18"
+  },
+  "https://h2.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://h2.bet.br/affiliates",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:02:27"
+  },
+  "https://hiper.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:58:21"
+  },
+  "https://ice.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:59:53"
+  },
+  "https://ijogo.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:29:25"
+  },
+  "https://jogajunto.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:19:39"
+  },
+  "https://jogalimpo.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:29:17"
+  },
+  "https://jogao.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:03:29"
+  },
+  "https://jogodeouro.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://jogodeouro.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:23:29"
+  },
+  "https://jogoonline.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:03:28"
+  },
+  "https://jogos.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:03:28"
+  },
+  "https://jonbet.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:25:08"
+  },
+  "https://kbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:04:40"
+  },
+  "https://kingpanda.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:04:54"
+  },
+  "https://kto.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://affiliates.kto.bet.br",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:30:28"
+  },
+  "https://lancedesorte.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:20:48"
+  },
+  "https://lider.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:20:46"
+  },
+  "https://lotogreen.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:20:47"
+  },
+  "https://lottoland.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:22:05"
+  },
+  "https://lottu.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:22:01"
+  },
+  "https://luck.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:22:01"
+  },
+  "https://luva.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:23:31"
+  },
+  "https://magicjackpot.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:23:28"
+  },
+  "https://matchbook.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:30:42"
+  },
+  "https://maxima.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://affiliates.maxima.bet.br/login",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:32:57"
+  },
+  "https://mcgames.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:04:33"
+  },
+  "https://megabet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:23:29"
+  },
+  "https://megaposta.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:25:03"
+  },
+  "https://meridianbet.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://meridianbet.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:34:53"
+  },
+  "https://mgm.bet.br": {
+    "detectado": true,
+    "status": "encontrado_completo",
+    "url_afiliado": "https://mgm.bet.br/afiliados",
+    "email_afiliado": "ajuda@betmgm.bet.br",
+    "checado_em": "2026-05-12T16:25:00"
+  },
+  "https://milhao.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:30:04"
+  },
+  "https://mmabet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:24:58"
+  },
+  "https://montecarlos.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:27:39"
+  },
+  "https://multi.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:38:12"
+  },
+  "https://nossa.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:26:19"
+  },
+  "https://novibet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:29:21"
+  },
+  "https://obabet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:26:19"
+  },
+  "https://oleybet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:26:21"
+  },
+  "https://ona.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:27:35"
+  },
+  "https://p9.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:27:52"
+  },
+  "https://pagol.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:32:51"
+  },
+  "https://papigames.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:35:34"
+  },
+  "https://pin.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:27:35"
+  },
+  "https://pinnacle.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:25:17"
+  },
+  "https://pitaco.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:29:14"
+  },
+  "https://pix.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:30:41"
+  },
+  "https://play.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:27:47"
+  },
+  "https://playuzu.bet.br": {
+    "detectado": true,
+    "status": "encontrado_completo",
+    "url_afiliado": "https://www.egamingonline.com",
+    "email_afiliado": "suporte@playuzu.bet.br",
+    "checado_em": "2026-05-12T15:29:06"
+  },
+  "https://pq777.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:31:04"
+  },
+  "https://qg.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:31:07"
+  },
+  "https://r7.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:36:43"
+  },
+  "https://rdp.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:35:21"
+  },
+  "https://reals.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:34:14"
+  },
+  "https://receba.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:28:11"
+  },
+  "https://reidopitaco.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:32:31"
+  },
+  "https://rico.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:35:16"
+  },
+  "https://rivalo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:35:20"
+  },
+  "https://seguro.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:37:56"
+  },
+  "https://seu.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:37:56"
+  },
+  "https://sortenabet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:37:59"
+  },
+  "https://sorteonline.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:04:24"
+  },
+  "https://spin.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:19:31"
+  },
+  "https://sportingbet.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:23:55"
+  },
+  "https://sporty.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:20:40"
+  },
+  "https://stake.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://stake.bet.br/afiliados-resumen",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:33:04"
+  },
+  "https://start.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:23:19"
+  },
+  "https://super.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:24:33"
+  },
+  "https://superbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:29:05"
+  },
+  "https://suprema.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://suprema.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:32:31"
+  },
+  "https://tiger.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:26:39"
+  },
+  "https://tivo.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:31:44"
+  },
+  "https://tradicional.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:31:47"
+  },
+  "https://tropino.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:32:56"
+  },
+  "https://ultra.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://docs.google.com/forms/d/e/1FAIpQLSdchKk0JYYi7MwdjnBCKVqLGFR3WzsX3g6do6QisT59Somy2A/viewform",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:39:17"
+  },
+  "https://up.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:36:07"
+  },
+  "https://vaidebet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:37:16"
+  },
+  "https://vbet.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:04:52"
+  },
+  "https://vera.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:42:19"
+  },
+  "https://versus.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:24:49"
+  },
+  "https://vert.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:19:44"
+  },
+  "https://vivaro.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:58:18"
+  },
+  "https://vivasorte.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T15:59:53"
+  },
+  "https://vupi.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:03:31"
+  },
+  "https://wjcasino.bet.br": {
+    "detectado": true,
+    "status": "encontrado_url",
+    "url_afiliado": "https://wjcasino.bet.br/afiliados",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:04:40"
+  },
+  "https://xbetcaixa.bet.br": {
+    "detectado": false,
+    "status": "erro_conexao",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:20:44"
+  },
+  "https://xx.bet.br": {
+    "detectado": false,
+    "status": "nao_encontrado",
+    "url_afiliado": "",
+    "email_afiliado": "",
+    "checado_em": "2026-05-12T16:22:28"
+  }
+}

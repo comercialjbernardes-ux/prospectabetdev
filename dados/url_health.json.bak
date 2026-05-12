@@ -1,0 +1,1368 @@
+{
+  "https://1pra1.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://1pra1.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 775
+  },
+  "https://1xbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://1xbet.bet.br/country-block",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 839
+  },
+  "https://4play.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://4play.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1461
+  },
+  "https://4win.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://4win.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1060
+  },
+  "https://55w.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://55w.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 2
+  },
+  "https://5g.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://5g.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 90
+  },
+  "https://6r.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://6r.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 650
+  },
+  "https://6z.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://6z.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 79
+  },
+  "https://7games.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://7games.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 992
+  },
+  "https://7k.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://geo-block.7k.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 828
+  },
+  "https://9d.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://9d.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 489
+  },
+  "https://9f.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://9f.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 519
+  },
+  "https://a definir": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://a definir",
+    "redirecionou": false,
+    "latencia_ms": 1
+  },
+  "https://a247.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://a247.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 12243
+  },
+  "https://afun.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://afun.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 86
+  },
+  "https://ai.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://ai.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 697
+  },
+  "https://alfa.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://alfa.bet.br/blocked?countryName=US",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 909
+  },
+  "https://aposta.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://aposta.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 601
+  },
+  "https://aposta1.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.aposta1.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1110
+  },
+  "https://apostaganha.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://apostaganha.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 608
+  },
+  "https://apostamax.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://apostamax.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1177
+  },
+  "https://apostar.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://apostar.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1177
+  },
+  "https://apostatudo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://apostatudo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 996
+  },
+  "https://apostou.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.apostou.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 2019
+  },
+  "https://arenaplus.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://arenaplus.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 23
+  },
+  "https://aviao.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.aviao.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1894
+  },
+  "https://b1bet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://b1bet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 972
+  },
+  "https://bacanaplay.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.bacanaplay.bet.br:443",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 2970
+  },
+  "https://bandbet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.bandbet.bet.br:443/",
+    "redirecionou": false,
+    "latencia_ms": 1392
+  },
+  "https://bateu.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://bateu.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 895
+  },
+  "https://bau.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://bau.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 78
+  },
+  "https://bet365.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.bet365.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1683
+  },
+  "https://bet4.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://bet4.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 665
+  },
+  "https://betaki.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betaki.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 984
+  },
+  "https://betano.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.betano.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1747
+  },
+  "https://betao.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betao.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 912
+  },
+  "https://betapp.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://betapp.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 519
+  },
+  "https://betboo.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://help.betboo.bet.br/closed",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1492
+  },
+  "https://betboom.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betboom.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 949
+  },
+  "https://betbra.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://betbra.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 672
+  },
+  "https://betbuffalos.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betbuffalos.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 754
+  },
+  "https://betcaixa.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betcaixa.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 839
+  },
+  "https://betcopa.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://betcopa.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 95
+  },
+  "https://betdasorte.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.betdasorte.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 929
+  },
+  "https://betespecial.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://betespecial.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 860
+  },
+  "https://betesporte.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betesporte.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1038
+  },
+  "https://betfair.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betfair.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1056
+  },
+  "https://betfalcons.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betfalcons.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1030
+  },
+  "https://betfast.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betfast.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 825
+  },
+  "https://betfusion.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betfusion.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1073
+  },
+  "https://betgo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betgo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 930
+  },
+  "https://betgorillas.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betgorillas.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 867
+  },
+  "https://betmgm.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.betmgm.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1986
+  },
+  "https://betnacional.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://betnacional.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 546
+  },
+  "https://betou.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betou.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 953
+  },
+  "https://betpix365.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betpix365.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 992
+  },
+  "https://betpontobet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betpontobet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 858
+  },
+  "https://betsson.bet.br": {
+    "status": "erro_http",
+    "http_code": 404,
+    "url_final": "https://www.betsson.bet.br:443/",
+    "redirecionou": false,
+    "latencia_ms": 1317
+  },
+  "https://betsul.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betsul.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 859
+  },
+  "https://betvip.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://betvip.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 910
+  },
+  "https://betwarrior.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://betwarrior.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 552
+  },
+  "https://big.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://big.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1129
+  },
+  "https://bingo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://bingo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1056
+  },
+  "https://bingoplus.bet.br": {
+    "status": "timeout",
+    "http_code": 0,
+    "url_final": "https://bingoplus.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 16834
+  },
+  "https://blaze.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://blaze.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 434
+  },
+  "https://bolsadeaposta.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://bolsadeaposta.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 942
+  },
+  "https://br4.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://br4.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 864
+  },
+  "https://bra.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://bra.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 893
+  },
+  "https://brasil.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.brasil.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1194
+  },
+  "https://brasildasorte.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://brasildasorte.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 815
+  },
+  "https://bravo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://bravo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 880
+  },
+  "https://brazino777.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.brazino777.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1494
+  },
+  "https://brbet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://brbet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 761
+  },
+  "https://brx.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://brx.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 886
+  },
+  "https://bullsbet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://bullsbet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 810
+  },
+  "https://bz.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://bz.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 83
+  },
+  "https://casadeapostas.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://casadeapostas.bet.br/br/sports",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1594
+  },
+  "https://cassino.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://cassino.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1082
+  },
+  "https://cbesportes.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://cbesportes.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 757
+  },
+  "https://cgg.bet.br": {
+    "status": "timeout",
+    "http_code": 0,
+    "url_final": "https://cgg.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 16854
+  },
+  "https://donald.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://donald.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 934
+  },
+  "https://donosdabola.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://donosdabola.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 866
+  },
+  "https://drbingo.bet.br": {
+    "status": "erro_http",
+    "http_code": 401,
+    "url_final": "https://drbingo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 567
+  },
+  "https://energia.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://energia.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 865
+  },
+  "https://esporte365.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://esporte365.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 852
+  },
+  "https://esportesdasorte.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://esportesdasorte.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 861
+  },
+  "https://esportiva.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://esportiva.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 507
+  },
+  "https://esportivavip.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://esportivavip.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 933
+  },
+  "https://estrelabet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.estrelabet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 2196
+  },
+  "https://f12.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://f12.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 648
+  },
+  "https://fanbit.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://fanbit.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 797
+  },
+  "https://faz1.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://faz1.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 686
+  },
+  "https://fazo.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://fazo.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 549
+  },
+  "https://fogo777.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://fogo777.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 345
+  },
+  "https://fulltbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://fulltbet.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 682
+  },
+  "https://fybet.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://fybet.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 13
+  },
+  "https://galera.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.galera.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1095
+  },
+  "https://ganhei.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://ganhei.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 402
+  },
+  "https://geralbet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://geralbet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 935
+  },
+  "https://ginga.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://ginga.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 965
+  },
+  "https://goldebet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://goldebet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 957
+  },
+  "https://h2.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.h2.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1596
+  },
+  "https://hiper.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://hiper.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 759
+  },
+  "https://ice.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://ice.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1030
+  },
+  "https://ijogo.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://ijogo.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 457
+  },
+  "https://jogajunto.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.jogajunto.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 835
+  },
+  "https://jogalimpo.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://jogalimpo.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 506
+  },
+  "https://jogao.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://jogao.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 885
+  },
+  "https://jogodeouro.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://jogodeouro.bet.br/pt/home",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 705
+  },
+  "https://jogoonline.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://jogoonline.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 2
+  },
+  "https://jogos.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://jogos.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 81
+  },
+  "https://jonbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://jonbet.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 412
+  },
+  "https://kbet.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://kbet.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 30
+  },
+  "https://kingpanda.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://kingpanda.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1076
+  },
+  "https://kto.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.kto.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 813
+  },
+  "https://lancedesorte.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://lancedesorte.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1174
+  },
+  "https://lider.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://lider.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1282
+  },
+  "https://lotogreen.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://lotogreen.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1025
+  },
+  "https://lottoland.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.lottoland.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 2103
+  },
+  "https://lottu.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://lottu.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1033
+  },
+  "https://luck.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://luck.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1024
+  },
+  "https://luva.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://luva.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1189
+  },
+  "https://magicjackpot.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://magicjackpot.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 4
+  },
+  "https://matchbook.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://matchbook.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 850
+  },
+  "https://maxima.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://maxima.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1056
+  },
+  "https://mcgames.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://mcgames.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 557
+  },
+  "https://megabet.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://megabet.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 177
+  },
+  "https://megaposta.bet.br": {
+    "status": "erro_http",
+    "http_code": 402,
+    "url_final": "https://megaposta.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 497
+  },
+  "https://meridianbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://meridianbet.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 908
+  },
+  "https://mgm.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.betmgm.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 3322
+  },
+  "https://milhao.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://milhao.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 830
+  },
+  "https://mmabet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://mmabet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 919
+  },
+  "https://montecarlos.bet.br": {
+    "status": "erro_http",
+    "http_code": 404,
+    "url_final": "https://montecarlos.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 492
+  },
+  "https://multi.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://multi.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 478
+  },
+  "https://nossa.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://nossa.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1029
+  },
+  "https://novibet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.novibet.bet.br/apostas-esportivas",
+    "redirecionou": false,
+    "latencia_ms": 1743
+  },
+  "https://obabet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://obabet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 840
+  },
+  "https://oleybet.bet.br": {
+    "status": "erro_http",
+    "http_code": 401,
+    "url_final": "https://oleybet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 689
+  },
+  "https://ona.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://ona.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 893
+  },
+  "https://p9.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://p9.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 426
+  },
+  "https://pagol.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://pagol.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1672
+  },
+  "https://papigames.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://papigames.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1018
+  },
+  "https://pin.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://pin.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1204
+  },
+  "https://pinnacle.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://pinnacle.bet.br/countryblock",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 710
+  },
+  "https://pitaco.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://pitaco.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 925
+  },
+  "https://pix.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://pix.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 477
+  },
+  "https://play.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://play.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 718
+  },
+  "https://playuzu.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.playuzu.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1161
+  },
+  "https://pq777.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://pq777.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 89
+  },
+  "https://qg.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://qg.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1106
+  },
+  "https://r7.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://r7.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 906
+  },
+  "https://rdp.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://reidopitaco.bet.br:443/betting",
+    "redirecionou": false,
+    "latencia_ms": 1981
+  },
+  "https://reals.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://reals.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 503
+  },
+  "https://receba.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.receba.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1762
+  },
+  "https://reidopitaco.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://reidopitaco.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1097
+  },
+  "https://rico.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://rico.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1193
+  },
+  "https://rivalo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://rivalo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 841
+  },
+  "https://seguro.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://seguro.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 819
+  },
+  "https://seu.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://seu.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 797
+  },
+  "https://sortenabet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://sortenabet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 892
+  },
+  "https://sorteonline.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.sorteonline.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1798
+  },
+  "https://spin.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://spin.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 751
+  },
+  "https://sportingbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://help.sportingbet.bet.br/closed",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1145
+  },
+  "https://sporty.bet.br": {
+    "status": "erro_http",
+    "http_code": 451,
+    "url_final": "https://sporty.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 391
+  },
+  "https://stake.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://stake.bet.br/bem-vindo",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 9907
+  },
+  "https://start.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://start.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 967
+  },
+  "https://super.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://super.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 6
+  },
+  "https://superbet.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://superbet.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 384
+  },
+  "https://suprema.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://suprema.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 792
+  },
+  "https://tiger.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://tiger.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 788
+  },
+  "https://tivo.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://tivo.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 899
+  },
+  "https://tradicional.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://tradicional.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 879
+  },
+  "https://tropino.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://tropino.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 82
+  },
+  "https://ultra.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://ultra.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1245
+  },
+  "https://up.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://up.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 920
+  },
+  "https://vaidebet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://vaidebet.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 766
+  },
+  "https://vbet.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.vbet.bet.br/pb",
+    "redirecionou": false,
+    "latencia_ms": 1712
+  },
+  "https://vera.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://vera.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 749
+  },
+  "https://versus.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.versus.bet.br",
+    "redirecionou": false,
+    "redirect_permanente": true,
+    "latencia_ms": 1089
+  },
+  "https://vert.bet.br": {
+    "status": "timeout",
+    "http_code": 0,
+    "url_final": "https://vert.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 16908
+  },
+  "https://vivaro.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://vivaro.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 788
+  },
+  "https://vivasorte.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://vivasorte.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 999
+  },
+  "https://vupi.bet.br": {
+    "status": "erro_http",
+    "http_code": 403,
+    "url_final": "https://www.vupi.bet.br/",
+    "redirecionou": false,
+    "latencia_ms": 1787
+  },
+  "https://wjcasino.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://wjcasino.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 359
+  },
+  "https://xbetcaixa.bet.br": {
+    "status": "erro_dns",
+    "http_code": 0,
+    "url_final": "https://xbetcaixa.bet.br",
+    "redirecionou": false,
+    "latencia_ms": 4
+  },
+  "https://xx.bet.br": {
+    "status": "ok",
+    "http_code": 200,
+    "url_final": "https://www.xx.bet.br/",
+    "redirecionou": false,
+    "redirect_permanente": false,
+    "latencia_ms": 1514
+  }
+}

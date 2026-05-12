@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Bets — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.20.1/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">Prospector</span>
+      <span class="brand-sub">Bets · v3</span>
+    </div>
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu" aria-label="Colapsar menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar-section-title">Navegação</div>
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('index') }}" class="nav-item active">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+      <span>Dashboard</span>
+    </a>
+    <a href="#charts-section" class="nav-item" onclick="document.getElementById('charts-section').scrollIntoView({behavior:'smooth'});event.preventDefault();">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12v5"/><path d="M12 7v10"/><path d="M17 10v7"/></svg></span>
+      <span>Análise</span>
+    </a>
+    <a href="{{ url_for('auditoria') }}" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span>
+      <span>Auditoria</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-status-chip">
+      <span class="status-pulse"></span>
+      <span id="playwright-status">Sistema Online</span>
+    </div>
+    Min. da Fazenda<br>SPA · Lei 14.790/23
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<div class="main-wrapper">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Visão Geral</div>
+      <div class="topbar-breadcrumb">
+        <span>DASHBOARD</span>
+        <span class="breadcrumb-sep">/</span>
+        <span>BETS REGULAMENTADAS</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active">VISÃO_GERAL</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="sync-chip" id="sync-indicator" title="Última sincronização com o CSV oficial do gov.br">
+        <span class="status-pulse"></span>
+        CSV: <span id="sync-status">—</span>
+      </span>
+      <button class="btn-top" onclick="forcarSyncCsv()" title="Força sincronização imediata">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+        Sincronizar
+      </button>
+      <button class="btn-top" onclick="recarregarDados()" title="Recarregar dados do servidor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/></svg>
+        Recarregar
+      </button>
+      <button class="btn-top btn-top-primary" onclick="document.getElementById('charts-section').scrollIntoView({behavior:'smooth'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V7"/><path d="M17 16v-4"/></svg>
+        Analytics
+      </button>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <section class="kpi-section">
+
+    <div class="kpi-card kpi-orange">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/total-bets.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Total Bets</div>
+        <div class="kpi-value" id="kpi-total">—</div>
+      </div>
+      <div class="kpi-trend">Regulamentadas</div>
+    </div>
+
+    <div class="kpi-card kpi-success">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/com-email.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Com Email</div>
+        <div class="kpi-value" id="kpi-email">—</div>
+      </div>
+      <div class="kpi-trend">Encontrados</div>
+    </div>
+
+    <div class="kpi-card kpi-danger">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/sem-email.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Sem Email</div>
+        <div class="kpi-value" id="kpi-sem-email">—</div>
+      </div>
+      <div class="kpi-trend">Não localizados</div>
+    </div>
+
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/com-afiliados.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Com Afiliados</div>
+        <div class="kpi-value" id="kpi-afiliados">—</div>
+      </div>
+      <div class="kpi-trend">Detectados</div>
+    </div>
+
+    <div class="kpi-card kpi-success">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/urls-online.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">URLs Online</div>
+        <div class="kpi-value" id="kpi-urls-ativas">—</div>
+      </div>
+      <div class="kpi-trend">200 · redirect · bot</div>
+    </div>
+
+    <div class="kpi-card kpi-danger">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/urls-inativas.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">URLs Inativas</div>
+        <div class="kpi-value" id="kpi-urls-inativas">—</div>
+      </div>
+      <div class="kpi-trend">Inacessíveis</div>
+    </div>
+
+    <div class="kpi-card kpi-magenta">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/editados.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Editados</div>
+        <div class="kpi-value" id="kpi-editados">—</div>
+      </div>
+      <div class="kpi-trend">manual override</div>
+    </div>
+
+    <div class="kpi-card kpi-info">
+      <div class="kpi-glow"></div>
+      <div class="kpi-icon-wrap"><img src="{{ url_for('static', filename='icons/ultima-atualizacao.png') }}" alt="" /></div>
+      <div class="kpi-data">
+        <div class="kpi-label">Última Atualização</div>
+        <div class="kpi-value kpi-value-sm" id="kpi-atualizacao">—</div>
+      </div>
+      <div class="kpi-trend">Data de coleta</div>
+    </div>
+
+  </section>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-bar-inner">
+      <div class="fbar-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="f-marca" class="fbar-input" placeholder="Buscar marca, CNPJ ou razão social..." />
+      </div>
+
+      <select id="f-status" class="fbar-select">
+        <option value="">Status email</option>
+        <option value="com_email">Com email</option>
+        <option value="sem_email">Sem email</option>
+        <option value="falhou">Falhou</option>
+      </select>
+
+      <select id="f-afiliados" class="fbar-select">
+        <option value="">Afiliados</option>
+        <option value="com">✅ Com afiliados</option>
+        <option value="sem">❌ Sem afiliados</option>
+        <option value="nd">⚪ Não verificado</option>
+      </select>
+
+      <select id="f-saude-url" class="fbar-select">
+        <option value="">Saúde da URL</option>
+        <option value="online">🟢 Online — todas as acessíveis</option>
+        <option value="ok">🟢 Online — responde 200 OK</option>
+        <option value="redirect">🟡 Online — via redirect (30x)</option>
+        <option value="bloqueado">🟠 Online — bloqueia bots (4xx)</option>
+        <option value="erro">🔴 Offline / Erro (5xx · timeout · DNS)</option>
+        <option value="desconhecido">⚪ Não verificada</option>
+      </select>
+
+      <select id="f-reclame-aqui" class="fbar-select">
+        <option value="">Reclame Aqui</option>
+        <option value="encontrado">📋 Com dados</option>
+        <option value="ra1000">★ RA1000</option>
+        <option value="nao_encontrado">✗ Não encontrado</option>
+        <option value="desconhecido">⚪ Não verificado</option>
+      </select>
+
+      <select id="f-porte" class="fbar-select"><option value="">Porte</option></select>
+      <select id="f-situacao" class="fbar-select"><option value="">Situação</option></select>
+      <select id="f-uf" class="fbar-select" onchange="atualizarMunicipios()"><option value="">UF</option></select>
+      <select id="f-municipio" class="fbar-select"><option value="">Município</option></select>
+
+      <input type="date" id="f-data-inicio" class="fbar-input fbar-date" title="Data coleta: de" />
+      <input type="date" id="f-data-fim" class="fbar-input fbar-date" title="Data coleta: até" />
+
+      <div class="fbar-actions">
+        <button class="btn-clear" onclick="limparFiltros()">Limpar</button>
+        <button class="btn-apply" onclick="aplicarFiltros()">Aplicar</button>
+        <button class="btn-export csv" onclick="exportarCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          CSV
+        </button>
+        <button class="btn-export xlsx" onclick="exportarXLSX()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          XLSX
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="table-statusbar">
+      <span id="table-count">Carregando...</span>
+      <div class="pagination-size">
+        Exibir
+        <select id="page-size" class="fbar-select" style="width:72px" onchange="mudarTamanhoPagina()">
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        por página
+      </div>
+    </div>
+
+    <div id="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Carregando dados...</p>
+    </div>
+
+    <div class="table-wrapper" id="table-wrapper" style="display:none">
+      <table class="data-table" id="data-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-col="marca" onclick="ordenarPor('marca')">Marca <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="razao_social" onclick="ordenarPor('razao_social')">Razão Social <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="cnpj" onclick="ordenarPor('cnpj')">CNPJ <span class="sort-icon">↕</span></th>
+            <th>URL</th>
+            <th>Email</th>
+            <th>Afiliado</th>
+            <th>Reclame Aqui</th>
+            <th class="sortable" data-col="uf" onclick="ordenarPor('uf')">UF <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="municipio" onclick="ordenarPor('municipio')">Município <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="status" onclick="ordenarPor('status')">Status <span class="sort-icon">↕</span></th>
+            <th class="sortable num-col" data-col="capital_social" onclick="ordenarPor('capital_social')">Capital Social <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="data_abertura" onclick="ordenarPor('data_abertura')">Abertura <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-col="data_coleta" onclick="ordenarPor('data_coleta')">Coleta <span class="sort-icon">↕</span></th>
+            <th class="obs-col">Observação</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination" style="display:none">
+      <button class="btn-page" id="btn-prev" onclick="irParaPagina(paginaAtual - 1)">‹ Anterior</button>
+      <div id="page-numbers" class="page-numbers"></div>
+      <button class="btn-page" id="btn-next" onclick="irParaPagina(paginaAtual + 1)">Próximo ›</button>
+    </div>
+
+    <!-- CHARTS -->
+    <section class="charts-section" id="charts-section">
+      <h2 class="section-title">Visualizações</h2>
+      <p class="section-subtitle">// TODOS OS GRÁFICOS REFLETEM OS FILTROS APLICADOS</p>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="chart-title">Porte da Empresa</h3>
+          <div class="chart-container"><canvas id="chart-porte"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Status de Email</h3>
+          <div class="chart-container"><canvas id="chart-status"></canvas></div>
+        </div>
+        <div class="chart-card chart-card-wide">
+          <h3 class="chart-title">Bets por UF</h3>
+          <div class="chart-container chart-container-bar"><canvas id="chart-uf"></canvas></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    PROSPECTOR <span class="neon-text">BETS</span> · DADOS: MIN. DA FAZENDA / SECRETARIA DE PRÊMIOS E APOSTAS · LEI 14.790/23
+  </footer>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<script>
+// Sidebar collapse — persistente em localStorage
+(function() {
+  const sidebarEl = document.querySelector('.sidebar');
+  const collapseBtn = document.getElementById('sidebarCollapseBtn');
+  const SIDEBAR_KEY = 'prospector-sidebar-collapsed';
+  if (localStorage.getItem(SIDEBAR_KEY) === '1') {
+    sidebarEl.classList.add('is-collapsed');
+    document.body.classList.add('sidebar-collapsed');
+  }
+  collapseBtn?.addEventListener('click', () => {
+    const collapsed = sidebarEl.classList.toggle('is-collapsed');
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
+    localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
+    collapseBtn.title = collapsed ? 'Expandir menu' : 'Colapsar menu';
+  });
+})();
+</script>
+</body>
+</html>

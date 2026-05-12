@@ -1,0 +1,46 @@
+# ============================================================
+# Prospector Bets — .gitignore
+# ============================================================
+
+# --- Dados gerados automaticamente (não versionar) ---
+dados/bets_enriquecidas.json
+dados/url_health.json
+dados/csv_sync_status.json
+checkpoint.json
+bets_com_emails.csv
+relatorio.txt
+
+# --- Logs ---
+*.log
+coleta_stdout*.log
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.env
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Flask ---
+flask.log
+instance/

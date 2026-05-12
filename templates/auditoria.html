@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Bets — Auditoria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">Prospector</span>
+      <span class="brand-sub">Bets · v3</span>
+    </div>
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu" aria-label="Colapsar menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar-section-title">Navegação</div>
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('index') }}" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+      <span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('index') }}#charts-section" class="nav-item">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12v5"/><path d="M12 7v10"/><path d="M17 10v7"/></svg></span>
+      <span>Análise</span>
+    </a>
+    <a href="{{ url_for('auditoria') }}" class="nav-item active">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span>
+      <span>Auditoria</span>
+      {% if total_eventos %}<span class="nav-badge">{{ total_eventos }}</span>{% endif %}
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-status-chip">
+      <span class="status-pulse"></span>
+      <span>Sistema Online</span>
+    </div>
+    Min. da Fazenda<br>SPA · Lei 14.790/23
+  </div>
+</aside>
+
+<div class="main-wrapper">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Auditoria</div>
+      <div class="topbar-breadcrumb">
+        <span>DASHBOARD</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active">AUDIT_LOG</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="sync-chip">
+        <span class="status-pulse"></span>
+        {{ total_eventos or 0 }} eventos · live
+      </span>
+      <button class="btn-top" onclick="window.location.href='{{ url_for('exportar_auditoria') if False else '#' }}'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar log
+      </button>
+    </div>
+  </header>
+
+  <main class="content" style="padding-top:24px">
+
+    <h2 class="section-title">Histórico de Alterações</h2>
+    <p class="section-subtitle">// REGISTRO IMUTÁVEL DE TODAS AS EDIÇÕES MANUAIS NO BANCO DE BETS</p>
+
+    <form method="get" class="audit-toolbar" action="{{ url_for('auditoria') }}">
+      <input type="text" name="q" value="{{ filtros.q or '' }}" placeholder="🔍 Buscar marca, campo ou usuário..." style="flex:1;min-width:240px" />
+
+      <select name="acao">
+        <option value="">Todas as ações</option>
+        <option value="EDIT" {% if filtros.acao == 'EDIT' %}selected{% endif %}>EDIT</option>
+        <option value="DELETE" {% if filtros.acao == 'DELETE' %}selected{% endif %}>DELETE</option>
+        <option value="RESET" {% if filtros.acao == 'RESET' %}selected{% endif %}>RESET</option>
+      </select>
+
+      <select name="campo">
+        <option value="">Todos os campos</option>
+        {% for campo in campos_disponiveis or [] %}
+          <option value="{{ campo }}" {% if filtros.campo == campo %}selected{% endif %}>{{ campo }}</option>
+        {% endfor %}
+      </select>
+
+      <input type="date" name="data_inicio" value="{{ filtros.data_inicio or '' }}" />
+      <input type="date" name="data_fim" value="{{ filtros.data_fim or '' }}" />
+
+      <a href="{{ url_for('auditoria') }}" class="btn-audit-ghost" style="text-decoration:none;display:inline-flex;align-items:center">Limpar</a>
+      <button type="submit" class="btn-audit">Aplicar</button>
+      <span class="audit-count">{{ total_eventos or 0 }} eventos</span>
+    </form>
+
+    <div class="audit-table-wrap">
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Ação</th>
+            <th>Marca</th>
+            <th>Campo</th>
+            <th>Valor anterior</th>
+            <th>Novo valor</th>
+            <th>Usuário</th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if eventos %}
+            {% for ev in eventos %}
+            <tr>
+              <td class="ts-cell">{{ ev.timestamp_fmt or ev.timestamp }}</td>
+              <td>
+                {% set acao = (ev.acao or '')|upper %}
+                <span class="badge {% if acao == 'EDIT' %}acao-edit{% elif acao == 'DELETE' %}acao-delete{% elif acao == 'RESET' %}acao-reset{% else %}acao-edit{% endif %}">{{ acao }}</span>
+              </td>
+              <td><span class="cell-marca">{{ ev.marca or '—' }}</span></td>
+              <td class="cell-mono" style="color:#5a6470">{{ ev.campo or '—' }}</td>
+              <td class="val-cell {% if not ev.valor_anterior %}val-vazio{% endif %}" {% if (acao == 'DELETE' or acao == 'RESET') and ev.valor_anterior %}style="color:#e11d48"{% elif ev.valor_anterior %}style="color:#d97706"{% endif %}>
+                {{ ev.valor_anterior or '—' }}
+              </td>
+              <td class="val-cell {% if not ev.valor_novo %}val-vazio{% endif %}" {% if ev.valor_novo and acao != 'DELETE' %}style="color:#ff6100"{% endif %}>
+                {{ ev.valor_novo or '—' }}
+              </td>
+              <td>{{ ev.usuario or 'system' }}</td>
+              <td class="ts-cell">{{ ev.ip or '—' }}</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="8" style="text-align:center;padding:40px;color:#5a6470">
+                Nenhum evento de auditoria encontrado.
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if total_paginas and total_paginas > 1 %}
+    <div class="pagination">
+      {% set prev_page = (pagina_atual or 1) - 1 %}
+      {% set next_page = (pagina_atual or 1) + 1 %}
+      <a href="{% if prev_page >= 1 %}?page={{ prev_page }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}{% else %}#{% endif %}"
+         class="btn-page" {% if prev_page < 1 %}aria-disabled="true" style="pointer-events:none;opacity:.4"{% endif %}>‹ Anterior</a>
+      <div class="page-numbers">
+        {% for p in range(1, total_paginas + 1) %}
+          <a href="?page={{ p }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}"
+             class="page-btn {% if p == pagina_atual %}active{% endif %}" style="text-decoration:none">{{ p }}</a>
+        {% endfor %}
+      </div>
+      <a href="{% if next_page <= total_paginas %}?page={{ next_page }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}{% else %}#{% endif %}"
+         class="btn-page" {% if next_page > total_paginas %}aria-disabled="true" style="pointer-events:none;opacity:.4"{% endif %}>Próximo ›</a>
+    </div>
+    {% endif %}
+
+  </main>
+
+  <footer class="footer">
+    PROSPECTOR <span class="neon-text">BETS</span> · LOG IMUTÁVEL · ARMAZENADO POR 5 ANOS · LGPD COMPLIANT
+  </footer>
+</div>
+
+<script>
+(function() {
+  const sidebarEl = document.querySelector('.sidebar');
+  const collapseBtn = document.getElementById('sidebarCollapseBtn');
+  const SIDEBAR_KEY = 'prospector-sidebar-collapsed';
+  if (localStorage.getItem(SIDEBAR_KEY) === '1') {
+    sidebarEl.classList.add('is-collapsed');
+    document.body.classList.add('sidebar-collapsed');
+  }
+  collapseBtn?.addEventListener('click', () => {
+    const collapsed = sidebarEl.classList.toggle('is-collapsed');
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
+    localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
+  });
+})();
+</script>
+</body>
+</html>
