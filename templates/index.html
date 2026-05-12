@@ -421,12 +421,14 @@
     }
   });
 
-  function adicionarMsg(texto, role, meta) {
+  function adicionarMsg(texto, role, meta, opts) {
+    opts = opts || {};
     const wrap = document.createElement('div');
     wrap.className = 'chat-msg chat-msg-' + role;
     const bub = document.createElement('div');
     bub.className = 'chat-bubble';
-    bub.innerHTML = renderizarMarkdown(texto);
+    // raw=true → injeta HTML direto (usado para placeholder); senão renderiza markdown
+    bub.innerHTML = opts.raw ? texto : renderizarMarkdown(texto);
     wrap.appendChild(bub);
     if (meta) {
       const m = document.createElement('div');
@@ -475,7 +477,7 @@
     sendBtn.disabled = true;
     statusEl.textContent = 'Pensando…';
     adicionarMsg(pergunta, 'user');
-    const placeholderMsg = adicionarMsg('<span class="chat-thinking">⌛ Consultando dados…</span>', 'assistant');
+    const placeholderMsg = adicionarMsg('<span class="chat-thinking">⌛ Consultando dados…</span>', 'assistant', null, {raw: true});
 
     try {
       const r = await fetch('/api/chat', {
