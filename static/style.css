@@ -471,9 +471,13 @@ body.sidebar-collapsed .main-wrapper {
   min-height: 0;
   box-shadow: var(--shadow-sm);
   padding: 10px 14px;
-  display: flex;
+  /* GRID com 2 colunas fixas: icon (32px) | data (resto).
+     Isto garante que TODOS os cards tenham:
+     - ícone na MESMA posição X horizontal
+     - texto começando na MESMA posição X horizontal */
+  display: grid;
+  grid-template-columns: 32px 1fr;
   align-items: center;
-  justify-content: center;  /* centraliza conteúdo horizontalmente — elimina espaço vazio */
   gap: 12px;
   isolation: isolate;
 }
@@ -498,8 +502,7 @@ body.sidebar-collapsed .main-wrapper {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.kpi-icon-wrap { flex-shrink: 0; }
-.kpi-data { flex-shrink: 0; }
+/* No grid, ambos itens já estão posicionados — sem shrink-flex needed */
 .kpi-card .kpi-trend-up {
   background: var(--success-bg);
   border-color: rgba(22,163,74,.18);
