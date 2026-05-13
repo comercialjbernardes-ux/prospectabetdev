@@ -349,6 +349,52 @@ def auditoria():
     )
 
 
+@app.route("/api/auditoria/export")
+def exportar_auditoria():
+    """Exporta o log de auditoria filtrado como CSV (fix C1)."""
+    filtros = {
+        "q":           (request.args.get("q") or "").strip(),
+        "acao":        (request.args.get("acao") or "").strip().upper(),
+        "campo":       (request.args.get("campo") or "").strip(),
+        "data_inicio": (request.args.get("data_inicio") or "").strip(),
+        "data_fim":    (request.args.get("data_fim") or "").strip(),
+    }
+    snap = _snapshot_dados()
+    cnpj_marca = {
+        re.sub(r"\D", "", r.get("cnpj") or ""): r.get("marca", "")
+        for r in snap if r.get("cnpj")
+    }
+    # Sem paginação — pega tudo que passa nos filtros
+    eventos, _total, _campos = audit.ler_paginado(
+        filtros=filtros, pagina=1, por_pagina=10**9, cnpj_marca_map=cnpj_marca,
+    )
+    buf = io.StringIO()
+    writer = csv.writer(buf, delimiter=";", quoting=csv.QUOTE_MINIMAL)
+    writer.writerow([
+        "timestamp", "acao", "marca", "cnpj", "campo",
+        "valor_anterior", "valor_novo", "usuario", "ip",
+    ])
+    for ev in eventos:
+        writer.writerow([
+            ev.get("timestamp_fmt") or ev.get("timestamp") or "",
+            ev.get("acao") or "",
+            ev.get("marca") or "",
+            ev.get("cnpj") or "",
+            ev.get("campo") or "",
+            ev.get("valor_anterior") or "",
+            ev.get("valor_novo") or "",
+            ev.get("usuario") or "",
+            ev.get("ip") or "",
+        ])
+    csv_bytes = "﻿".encode("utf-8") + buf.getvalue().encode("utf-8")
+    nome = f"auditoria_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    return Response(
+        csv_bytes,
+        mimetype="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{nome}"'},
+    )
+
+
 @app.route("/api/dados")
 def api_dados():
     """
@@ -906,10 +952,11 @@ def health():
     workers_info["csv_sync"]       = _info_worker("csv_sync",       csv_sync,       Path("dados/csv_sync_status.json"))
     workers_info["afiliados"]      = _info_worker("afiliados",      afiliados_health if _AFILIADOS_HEALTH_DISPONIVEL else None, Path("dados/afiliados_health.json"))
     workers_info["reclame_aqui"]   = _info_worker("reclame_aqui",   _ra_health      if _RA_HEALTH_DISPONIVEL        else None, Path("dados/reclame_aqui_health.json"))
+    workers_info["email_validation"] = _info_worker("email_validation", email_validation if _EMAIL_VALIDATION_DISPONIVEL else None, Path("dados/email_validation.json"))
 
     # Determina status agregado
     workers_essenciais = ["url_health", "csv_sync"]
-    workers_secundarios = ["afiliados", "reclame_aqui"]
+    workers_secundarios = ["afiliados", "reclame_aqui", "email_validation"]
 
     essenciais_mortos  = sum(1 for k in workers_essenciais  if not workers_info[k]["alive"])
     secundarios_mortos = sum(1 for k in workers_secundarios if not workers_info[k]["alive"])

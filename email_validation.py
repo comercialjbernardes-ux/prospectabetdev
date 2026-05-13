@@ -215,6 +215,10 @@ def _tick() -> tuple[int, int]:
 
     fatia = _selecionar_fatia(emails, health, EMAILS_POR_TICK)
     if not fatia:
+        # Heartbeat: nenhum email para re-validar agora, mas toca o arquivo
+        # para que o monitor de saúde saiba que o worker está ativo.
+        with _lock:
+            _salvar_health(health)
         return 0, 0
 
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
