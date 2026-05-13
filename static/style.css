@@ -470,10 +470,11 @@ body.sidebar-collapsed .main-wrapper {
   transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
   min-height: 0;
   box-shadow: var(--shadow-sm);
-  padding: 8px 12px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;  /* centraliza conteúdo horizontalmente — elimina espaço vazio */
+  gap: 12px;
   isolation: isolate;
 }
 
@@ -482,10 +483,10 @@ body.sidebar-collapsed .main-wrapper {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  flex: 1;
+  /* Sem flex:1 — o conteúdo agrupa à esquerda; o glow decorativo preenche o vazio à direita */
 }
 .kpi-card .kpi-label { letter-spacing: 0.07em; font-size: 9.5px; }
-.kpi-card .kpi-value { font-size: 20px; }
+.kpi-card .kpi-value { font-size: 22px; }
 .kpi-card .kpi-value-sm { font-size: 13px; }
 .kpi-card .kpi-sub {
   font-size: 10px;
@@ -497,6 +498,8 @@ body.sidebar-collapsed .main-wrapper {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.kpi-icon-wrap { flex-shrink: 0; }
+.kpi-data { flex-shrink: 0; }
 .kpi-card .kpi-trend-up {
   background: var(--success-bg);
   border-color: rgba(22,163,74,.18);
