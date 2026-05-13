@@ -487,13 +487,17 @@ class TestAlertasInteligentes:
 
     def test_detectar_alerta_url_down_acumula_falhas(self):
         from url_health import _detectar_alerta_url_down
-        # Simula 3 falhas seguidas
-        antigo = {'_historico_falhas': [
-            '2026-05-12T18:00:00', '2026-05-12T18:15:00',
-        ]}
+        from datetime import datetime, timedelta
+        # Usa timestamps recentes (< 1h atrás) para garantir que passam pelo
+        # filtro de janela 24h independentemente de quando o teste é executado.
+        agora = datetime.now()
+        ts1 = (agora - timedelta(minutes=30)).isoformat(timespec="seconds")
+        ts2 = (agora - timedelta(minutes=15)).isoformat(timespec="seconds")
+        ts3 = agora.isoformat(timespec="seconds")
+        antigo = {'_historico_falhas': [ts1, ts2]}
         novo = {
             'status': 'erro_conexao',
-            'checado_em': '2026-05-12T18:30:00',
+            'checado_em': ts3,
             'http_code': 0,
         }
         result = _detectar_alerta_url_down('http://x.com', novo, antigo)

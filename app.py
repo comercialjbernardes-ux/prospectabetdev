@@ -19,11 +19,10 @@ import io
 import json
 import os
 import re
-import shutil
 import time
 from datetime import datetime
 from pathlib import Path
-from threading import Lock, RLock
+from threading import Lock
 from urllib.parse import urlparse
 
 from flask import Flask, Response, jsonify, render_template, request
@@ -306,7 +305,8 @@ def holdings_page():
 @app.route("/analytics")
 def analytics_page():
     """Página dedicada a gráficos e anomalias da semana."""
-    return render_template("analytics.html", active_tab="analytics")
+    total_bets = len(_snapshot_dados())
+    return render_template("analytics.html", active_tab="analytics", total_bets=total_bets)
 
 
 @app.route("/auditoria")

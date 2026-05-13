@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import re
+import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -103,24 +104,26 @@ def urls_caindo(registros: list[dict]) -> list[dict]:
 # salva o snapshot atual e compara com o anterior.
 
 _HIST_NOTAS_RA: dict[str, list[dict]] = {}   # slug → list[{ts, nota}]
+_HIST_LOCK = threading.Lock()                # protege _HIST_NOTAS_RA contra race condition
 _MAX_HIST = 14   # mantém 14 entradas (~2 semanas se rodar diariamente)
 
 
 def _atualizar_historico_ra(ra_health: dict) -> None:
-    """Salva snapshot atual no histórico in-memory."""
+    """Salva snapshot atual no histórico in-memory (thread-safe via _HIST_LOCK)."""
     agora = datetime.now().isoformat(timespec="seconds")
-    for slug, info in ra_health.items():
-        if info.get("status") != "encontrado" or info.get("nota") is None:
-            continue
-        hist = _HIST_NOTAS_RA.setdefault(slug, [])
-        # Só adiciona se a nota mudou OU se passou >1h da última entrada
-        if hist and hist[-1].get("nota") == info["nota"]:
-            ultima_ts = _parse_iso(hist[-1].get("ts"))
-            if ultima_ts and (datetime.now() - ultima_ts).total_seconds() < 3600:
+    with _HIST_LOCK:
+        for slug, info in ra_health.items():
+            if info.get("status") != "encontrado" or info.get("nota") is None:
                 continue
-        hist.append({"ts": agora, "nota": info["nota"], "marca": info.get("marca", "")})
-        if len(hist) > _MAX_HIST:
-            hist.pop(0)
+            hist = _HIST_NOTAS_RA.setdefault(slug, [])
+            # Só adiciona se a nota mudou OU se passou >1h da última entrada
+            if hist and hist[-1].get("nota") == info["nota"]:
+                ultima_ts = _parse_iso(hist[-1].get("ts"))
+                if ultima_ts and (datetime.now() - ultima_ts).total_seconds() < 3600:
+                    continue
+            hist.append({"ts": agora, "nota": info["nota"], "marca": info.get("marca", "")})
+            if len(hist) > _MAX_HIST:
+                hist.pop(0)
 
 
 def queda_ra(registros: list[dict], queda_min: float = 0.3) -> list[dict]:
@@ -138,7 +141,9 @@ def queda_ra(registros: list[dict], queda_min: float = 0.3) -> list[dict]:
     por_marca = {(r.get("marca") or "").lower(): r for r in registros}
 
     anomalias: list[dict] = []
-    for slug, hist in _HIST_NOTAS_RA.items():
+    with _HIST_LOCK:
+        snapshot = {slug: list(hist) for slug, hist in _HIST_NOTAS_RA.items()}
+    for slug, hist in snapshot.items():
         if len(hist) < 2:
             continue
         nota_atual = hist[-1].get("nota")

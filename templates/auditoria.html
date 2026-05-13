@@ -115,15 +115,23 @@
     <div class="pagination">
       {% set prev_page = (pagina_atual or 1) - 1 %}
       {% set next_page = (pagina_atual or 1) + 1 %}
-      <a href="{% if prev_page >= 1 %}?page={{ prev_page }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}{% else %}#{% endif %}"
+      {%- macro qs(p) -%}
+        ?page={{ p }}
+        {%- if filtros.q %}&q={{ filtros.q }}{% endif %}
+        {%- if filtros.acao %}&acao={{ filtros.acao }}{% endif %}
+        {%- if filtros.campo %}&campo={{ filtros.campo }}{% endif %}
+        {%- if filtros.data_inicio %}&data_inicio={{ filtros.data_inicio }}{% endif %}
+        {%- if filtros.data_fim %}&data_fim={{ filtros.data_fim }}{% endif %}
+      {%- endmacro -%}
+      <a href="{% if prev_page >= 1 %}{{ qs(prev_page) }}{% else %}#{% endif %}"
          class="btn-page" {% if prev_page < 1 %}aria-disabled="true" style="pointer-events:none;opacity:.4"{% endif %}>‹ Anterior</a>
       <div class="page-numbers">
         {% for p in range(1, total_paginas + 1) %}
-          <a href="?page={{ p }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}"
+          <a href="{{ qs(p) }}"
              class="page-btn {% if p == pagina_atual %}active{% endif %}" style="text-decoration:none">{{ p }}</a>
         {% endfor %}
       </div>
-      <a href="{% if next_page <= total_paginas %}?page={{ next_page }}{% if filtros.q %}&q={{ filtros.q }}{% endif %}{% if filtros.acao %}&acao={{ filtros.acao }}{% endif %}{% if filtros.campo %}&campo={{ filtros.campo }}{% endif %}{% else %}#{% endif %}"
+      <a href="{% if next_page <= total_paginas %}{{ qs(next_page) }}{% else %}#{% endif %}"
          class="btn-page" {% if next_page > total_paginas %}aria-disabled="true" style="pointer-events:none;opacity:.4"{% endif %}>Próximo ›</a>
     </div>
     {% endif %}
