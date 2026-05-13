@@ -470,9 +470,8 @@ body.sidebar-collapsed .main-wrapper {
   transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
   min-height: 0;
   box-shadow: var(--shadow-sm);
-  padding: 10px 14px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  padding: 8px 12px;
+  display: flex;
   align-items: center;
   gap: 10px;
   isolation: isolate;
@@ -483,19 +482,20 @@ body.sidebar-collapsed .main-wrapper {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  flex: 1;
 }
 .kpi-card .kpi-label { letter-spacing: 0.07em; font-size: 9.5px; }
 .kpi-card .kpi-value { font-size: 20px; }
 .kpi-card .kpi-value-sm { font-size: 13px; }
-.kpi-card .kpi-trend {
+.kpi-card .kpi-sub {
   font-size: 10px;
-  margin-top: 0;
-  justify-self: end;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  margin-top: 2px;
   white-space: nowrap;
-  padding: 3px 8px;
-  border-radius: var(--r-pill);
-  background: var(--bg-2);
-  border: 1px solid var(--border-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .kpi-card .kpi-trend-up {
   background: var(--success-bg);
@@ -806,6 +806,7 @@ body.sidebar-collapsed .main-wrapper {
   border-collapse: collapse;
   font-size: 12.5px;
   white-space: nowrap;
+  table-layout: fixed;   /* respeita widths do <colgroup> */
 }
 
 .data-table thead {
@@ -827,6 +828,8 @@ body.sidebar-collapsed .main-wrapper {
   font-family: var(--font-mono);
   white-space: nowrap;
   user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .data-table th.sortable { cursor: pointer; }
@@ -837,33 +840,31 @@ body.sidebar-collapsed .main-wrapper {
   padding: 7px 10px;
   border-bottom: 1px solid var(--border-muted);
   color: var(--text);
-  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
 }
 
-/* Alinhamentos específicos por coluna (Score, UF, Capital, datas → centro/direita) */
-.data-table th.num-col,
-.data-table td.num-col { text-align: right; font-variant-numeric: tabular-nums; }
-
-/* Score, Afiliado, Reclame Aqui — centralizar conteúdo */
-.data-table tbody td:nth-child(6),    /* Afiliado */
-.data-table tbody td:nth-child(7),    /* Reclame Aqui */
-.data-table tbody td:nth-child(8),    /* Score */
-.data-table tbody td:nth-child(9),    /* UF */
-.data-table tbody td:nth-child(12) {  /* Status */
-  text-align: center;
-}
-.data-table thead th:nth-child(6),
-.data-table thead th:nth-child(7),
-.data-table thead th:nth-child(8),
-.data-table thead th:nth-child(9),
-.data-table thead th:nth-child(12) {
-  text-align: center;
-}
-
 .data-table tr:last-child td { border-bottom: none; }
+
+/* Alinhamento por coluna — header e células sempre iguais.
+   table-layout:fixed + colgroup garante mesmo X de início. */
+/* Capital Social (12) → direita, com tabular-nums */
+.data-table th:nth-child(12),
+.data-table td:nth-child(12) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+/* Centralizar: Afiliado (6), RA (7), Score (8), UF (9), Status (11), Abertura (13), Coleta (14) */
+.data-table th:nth-child(6),  .data-table td:nth-child(6),
+.data-table th:nth-child(7),  .data-table td:nth-child(7),
+.data-table th:nth-child(8),  .data-table td:nth-child(8),
+.data-table th:nth-child(9),  .data-table td:nth-child(9),
+.data-table th:nth-child(11), .data-table td:nth-child(11),
+.data-table th:nth-child(13), .data-table td:nth-child(13),
+.data-table th:nth-child(14), .data-table td:nth-child(14) {
+  text-align: center;
+}
 
 .data-table tbody tr {
   cursor: pointer;

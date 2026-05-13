@@ -59,8 +59,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Total Bets</div>
         <div class="kpi-value" id="kpi-total">—</div>
+        <div class="kpi-sub">Regulamentadas</div>
       </div>
-      <div class="kpi-trend">Regulamentadas</div>
     </div>
 
     <div class="kpi-card kpi-success">
@@ -69,8 +69,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Com Email</div>
         <div class="kpi-value" id="kpi-email">—</div>
+        <div class="kpi-sub">Encontrados</div>
       </div>
-      <div class="kpi-trend">Encontrados</div>
     </div>
 
     <div class="kpi-card kpi-danger">
@@ -79,8 +79,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Sem Email</div>
         <div class="kpi-value" id="kpi-sem-email">—</div>
+        <div class="kpi-sub">Não localizados</div>
       </div>
-      <div class="kpi-trend">Não localizados</div>
     </div>
 
     <div class="kpi-card kpi-magenta">
@@ -89,8 +89,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Com Afiliados</div>
         <div class="kpi-value" id="kpi-afiliados">—</div>
+        <div class="kpi-sub">Detectados</div>
       </div>
-      <div class="kpi-trend">Detectados</div>
     </div>
 
     <div class="kpi-card kpi-success">
@@ -99,8 +99,8 @@
       <div class="kpi-data">
         <div class="kpi-label">URLs Online</div>
         <div class="kpi-value" id="kpi-urls-ativas">—</div>
+        <div class="kpi-sub">200 · redirect · bot</div>
       </div>
-      <div class="kpi-trend">200 · redirect · bot</div>
     </div>
 
     <div class="kpi-card kpi-danger">
@@ -109,8 +109,8 @@
       <div class="kpi-data">
         <div class="kpi-label">URLs Inativas</div>
         <div class="kpi-value" id="kpi-urls-inativas">—</div>
+        <div class="kpi-sub">Inacessíveis</div>
       </div>
-      <div class="kpi-trend">Inacessíveis</div>
     </div>
 
     <div class="kpi-card kpi-magenta">
@@ -119,8 +119,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Editados</div>
         <div class="kpi-value" id="kpi-editados">—</div>
+        <div class="kpi-sub">manual override</div>
       </div>
-      <div class="kpi-trend">manual override</div>
     </div>
 
     <div class="kpi-card kpi-info">
@@ -129,8 +129,8 @@
       <div class="kpi-data">
         <div class="kpi-label">Última Atualização</div>
         <div class="kpi-value kpi-value-sm" id="kpi-atualizacao">—</div>
+        <div class="kpi-sub">Data de coleta</div>
       </div>
-      <div class="kpi-trend">Data de coleta</div>
     </div>
 
   </section>
@@ -229,6 +229,23 @@
 
     <div class="table-wrapper" id="table-wrapper" style="display:none">
       <table class="data-table" id="data-table">
+        <colgroup>
+          <col style="width:130px">  <!-- 1. Marca -->
+          <col style="width:200px">  <!-- 2. Razão Social -->
+          <col style="width:140px">  <!-- 3. CNPJ -->
+          <col style="width:160px">  <!-- 4. URL -->
+          <col style="width:170px">  <!-- 5. Email -->
+          <col style="width:80px">   <!-- 6. Afiliado -->
+          <col style="width:90px">   <!-- 7. Reclame Aqui -->
+          <col style="width:60px">   <!-- 8. Score -->
+          <col style="width:42px">   <!-- 9. UF -->
+          <col style="width:140px">  <!-- 10. Município -->
+          <col style="width:88px">   <!-- 11. Status -->
+          <col style="width:90px">   <!-- 12. Capital -->
+          <col style="width:80px">   <!-- 13. Abertura -->
+          <col style="width:80px">   <!-- 14. Coleta -->
+          <col style="width:130px">  <!-- 15. Observação -->
+        </colgroup>
         <thead>
           <tr>
             <th class="sortable" data-col="marca" onclick="ordenarPor('marca')">Marca <span class="sort-icon">↕</span></th>
