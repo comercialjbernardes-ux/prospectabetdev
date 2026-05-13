@@ -837,10 +837,19 @@ body.sidebar-collapsed .main-wrapper {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* sort-icon é absolute — não precisa de espaço reservado, padding fica simétrico */
 
-.data-table th.sortable { cursor: pointer; }
+.data-table th.sortable { cursor: pointer; position: relative; }
 .data-table th.sortable:hover { color: var(--orange); }
-.sort-icon { opacity: .35; font-size: 9px; margin-left: 3px; }
+.sort-icon {
+  opacity: .35;
+  font-size: 9px;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 
 .data-table td {
   padding: 7px 10px;
