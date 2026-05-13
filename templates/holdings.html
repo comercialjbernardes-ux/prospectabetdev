@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Bets — Holdings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+{% include '_sidebar.html' with context %}
+
+<div class="main-wrapper">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Holdings</div>
+      <div class="topbar-breadcrumb">
+        <span>DASHBOARD</span>
+        <span class="breadcrumb-sep">/</span>
+        <span>BETS REGULAMENTADAS</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active">GRUPOS_EMPRESARIAIS</span>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="sync-chip">
+        <span class="status-pulse"></span>
+        <span id="holdings-counter-top">— grupos</span>
+      </span>
+    </div>
+  </header>
+
+  <main class="content" style="padding:24px 32px">
+    <h2 class="section-title">Grupos Empresariais</h2>
+    <p class="section-subtitle">// BETS COM MESMO CNPJ RAIZ (8 PRIMEIROS DÍGITOS) PERTENCEM AO MESMO GRUPO</p>
+
+    <!-- Stats no topo -->
+    <div class="holdings-stats" id="holdings-stats">
+      <div class="hstat">
+        <div class="hstat-value" id="hstat-total">—</div>
+        <div class="hstat-label">Grupos</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-value" id="hstat-marcas">—</div>
+        <div class="hstat-label">Marcas em grupos</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-value" id="hstat-indep">—</div>
+        <div class="hstat-label">Marcas independentes</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-value" id="hstat-maior">—</div>
+        <div class="hstat-label">Maior grupo</div>
+      </div>
+    </div>
+
+    <!-- Filtro de exibição -->
+    <div class="holdings-toolbar">
+      <input type="text" id="h-busca" placeholder="🔍 Buscar razão social ou CNPJ..." class="fbar-input" style="flex:1; min-width:200px" />
+      <select id="h-ordem" class="fbar-select">
+        <option value="n_marcas">Mais marcas</option>
+        <option value="score_medio">Melhor score</option>
+        <option value="n_ra1000">Mais RA1000</option>
+        <option value="n_inativas">Mais inativas</option>
+      </select>
+      <select id="h-min-marcas" class="fbar-select">
+        <option value="2">≥ 2 marcas</option>
+        <option value="3">≥ 3 marcas</option>
+        <option value="4">≥ 4 marcas</option>
+        <option value="5">≥ 5 marcas</option>
+      </select>
+    </div>
+
+    <!-- Lista de holdings -->
+    <div id="holdings-grid" class="holdings-grid-full">
+      <div class="insight-loading">Carregando holdings…</div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    PROSPECTOR <span class="neon-text">BETS</span> · DADOS: MIN. DA FAZENDA · LEI 14.790/23
+  </footer>
+</div>
+
+<script>
+(function () {
+  const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let dadosHoldings = [];
+
+  function classeScore(s) {
+    if (s == null) return 'nd';
+    if (s >= 80) return 'excelente';
+    if (s >= 65) return 'bom';
+    if (s >= 50) return 'regular';
+    if (s >= 30) return 'ruim';
+    return 'critico';
+  }
+
+  function renderizar() {
+    const busca = (document.getElementById('h-busca').value || '').toLowerCase();
+    const ordem = document.getElementById('h-ordem').value;
+    const minMarcas = parseInt(document.getElementById('h-min-marcas').value, 10);
+
+    let lista = dadosHoldings
+      .filter(h => h.n_marcas >= minMarcas)
+      .filter(h => !busca ||
+        (h.razao_social || '').toLowerCase().includes(busca) ||
+        (h.cnpj_raiz || '').includes(busca));
+
+    lista.sort((a, b) => (b[ordem] || 0) - (a[ordem] || 0));
+
+    const grid = document.getElementById('holdings-grid');
+    if (lista.length === 0) {
+      grid.innerHTML = '<div class="insight-empty">Nenhum grupo corresponde aos filtros.</div>';
+      return;
+    }
+
+    grid.innerHTML = lista.map(h => {
+      const marcasTags = h.marcas.map(m => `<span class="holding-marca">${esc(m)}</span>`).join('');
+      const flags = [];
+      if (h.n_ra1000 > 0)   flags.push(`<span class="holding-flag holding-flag-ra1000">★ ${h.n_ra1000} RA1000</span>`);
+      if (h.n_com_email > 0)flags.push(`<span class="holding-flag holding-flag-success">📧 ${h.n_com_email} emails</span>`);
+      if (h.n_inativas > 0) flags.push(`<span class="holding-flag holding-flag-warn">⚠ ${h.n_inativas} inativas</span>`);
+
+      // Tabela detalhada das marcas
+      const linhas = (h.registros || []).map(r => `
+        <tr>
+          <td><b>${esc(r.marca || '')}</b></td>
+          <td><span class="score-badge score-${r._health_score_classe || 'nd'}">${r._health_score ?? '—'}</span></td>
+          <td>${r._ra_nota != null ? r._ra_nota : '—'}</td>
+          <td>${r._ra_ra1000 ? '★' : ''} ${esc(r._ra_reputacao || '')}</td>
+          <td><code style="font-size:11px">${esc(r._url_health_status || '?')}</code></td>
+          <td style="text-align:right">${r.email_contato ? '✅' : '—'}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="holding-card-large">
+          <div class="holding-card-head">
+            <div class="holding-info">
+              <div class="holding-razao">${esc(h.razao_social) || '(sem razão social)'}</div>
+              <div class="holding-meta">
+                CNPJ raiz <code>${esc(h.cnpj_raiz)}</code> ·
+                ${esc(h.uf || '—')} ${h.municipio ? '· ' + esc(h.municipio) : ''} ·
+                <b>${h.n_marcas} marcas</b>
+              </div>
+            </div>
+            <div class="holding-score-block">
+              <span class="score-badge score-${classeScore(h.score_medio)}">${h.score_medio}</span>
+              <span class="holding-n-marcas">Score médio · ${h.score_min}-${h.score_max}</span>
+            </div>
+          </div>
+          <div class="holding-marcas">${marcasTags}</div>
+          ${flags.length ? `<div class="holding-flags">${flags.join('')}</div>` : ''}
+          <details class="holding-details">
+            <summary>Ver detalhes das ${h.n_marcas} marcas</summary>
+            <table class="holding-marcas-table">
+              <thead><tr><th>Marca</th><th>Score</th><th>RA</th><th>Reputação</th><th>URL</th><th>Email</th></tr></thead>
+              <tbody>${linhas}</tbody>
+            </table>
+          </details>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function carregar() {
+    try {
+      const r = await fetch('/api/holdings?top=999');
+      const j = await r.json();
+      dadosHoldings = j.holdings || [];
+      document.getElementById('holdings-counter-top').textContent = `${j.total_holdings || 0} grupos`;
+      document.getElementById('hstat-total').textContent = j.total_holdings || 0;
+      document.getElementById('hstat-marcas').textContent = j.stats.total_marcas_em_grupos || 0;
+      document.getElementById('hstat-indep').textContent = j.stats.marcas_independentes || 0;
+      const maior = j.stats.maior_grupo;
+      document.getElementById('hstat-maior').textContent = maior ? `${maior.n_marcas} marcas` : '—';
+      renderizar();
+    } catch (e) {
+      document.getElementById('holdings-grid').innerHTML =
+        '<div class="insight-empty">❌ Erro ao carregar dados.</div>';
+    }
+  }
+
+  document.getElementById('h-busca').addEventListener('input', renderizar);
+  document.getElementById('h-ordem').addEventListener('change', renderizar);
+  document.getElementById('h-min-marcas').addEventListener('change', renderizar);
+
+  carregar();
+})();
+</script>
+
+</body>
+</html>

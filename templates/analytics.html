@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prospector Bets — Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+{% include '_sidebar.html' with context %}
+
+<div class="main-wrapper">
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Analytics</div>
+      <div class="topbar-breadcrumb">
+        <span>DASHBOARD</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-active">VISUALIZAÇÕES_E_ANOMALIAS</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content" style="padding:24px 32px">
+
+    <!-- ANOMALIAS DA SEMANA -->
+    <section style="margin-bottom:28px">
+      <h2 class="section-title">⚠️ Anomalias da semana</h2>
+      <p class="section-subtitle">// COMPORTAMENTOS ATÍPICOS DETECTADOS NOS ÚLTIMOS 7 DIAS</p>
+      <div id="anomalias-list" class="anomalias-grid-full">
+        <div class="insight-loading">Carregando anomalias…</div>
+      </div>
+    </section>
+
+    <!-- GRÁFICOS -->
+    <section>
+      <h2 class="section-title">Visualizações</h2>
+      <p class="section-subtitle">// DISTRIBUIÇÕES AGREGADAS DAS 186 BETS</p>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 class="chart-title">Porte da Empresa</h3>
+          <div class="chart-container"><canvas id="chart-porte"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3 class="chart-title">Status de Email</h3>
+          <div class="chart-container"><canvas id="chart-status"></canvas></div>
+        </div>
+        <div class="chart-card chart-card-wide">
+          <h3 class="chart-title">Bets por UF</h3>
+          <div class="chart-container chart-container-bar"><canvas id="chart-uf"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    PROSPECTOR <span class="neon-text">BETS</span> · DADOS: MIN. DA FAZENDA · LEI 14.790/23
+  </footer>
+</div>
+
+<script>
+// ---- Anomalias ----
+(function () {
+  const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  function renderAnomalias(j) {
+    const list = document.getElementById('anomalias-list');
+    const blocos = [];
+
+    const uc = j.urls_caindo || {total: 0, itens: []};
+    blocos.push(`
+      <div class="anomalia-bloco">
+        <div class="anomalia-bloco-head">
+          <span class="anomalia-icon-red">🔴</span>
+          <div>
+            <div class="anomalia-bloco-title">URLs caindo (24h)</div>
+            <div class="anomalia-bloco-sub">${uc.total} bets com 3+ falhas recentes</div>
+          </div>
+        </div>
+        ${uc.itens.length === 0 ? '<div class="anomalia-empty">Tudo estável ✅</div>' :
+          uc.itens.map(a => `
+            <div class="anomalia-item">
+              <b>${esc(a.marca || a.url)}</b>
+              <span style="color:var(--text-dim); font-size:11px">${esc(a.uf || '')}</span>
+              <span class="anomalia-tag anomalia-tag-red">${a.n_falhas_24h}× falhas · ${esc(a.status_atual)}</span>
+            </div>
+          `).join('')
+        }
+      </div>
+    `);
+
+    const qra = j.queda_ra || {total: 0, itens: []};
+    blocos.push(`
+      <div class="anomalia-bloco">
+        <div class="anomalia-bloco-head">
+          <span class="anomalia-icon-orange">📉</span>
+          <div>
+            <div class="anomalia-bloco-title">Queda na nota Reclame Aqui</div>
+            <div class="anomalia-bloco-sub">${qra.total} bets com queda ≥0.3</div>
+          </div>
+        </div>
+        ${qra.itens.length === 0 ? '<div class="anomalia-empty">Sem quedas registradas (histórico em formação)</div>' :
+          qra.itens.map(a => `
+            <div class="anomalia-item">
+              <b>${esc(a.marca)}</b>
+              <span class="anomalia-tag anomalia-tag-orange">${a.nota_anterior} → ${a.nota_atual} (−${a.queda})</span>
+            </div>
+          `).join('')
+        }
+      </div>
+    `);
+
+    const ne = j.novas_sem_email || {total: 0, itens: []};
+    blocos.push(`
+      <div class="anomalia-bloco">
+        <div class="anomalia-bloco-head">
+          <span class="anomalia-icon-blue">🎯</span>
+          <div>
+            <div class="anomalia-bloco-title">Oportunidades de prospecção</div>
+            <div class="anomalia-bloco-sub">${ne.total} bets sem email adicionadas recentemente</div>
+          </div>
+        </div>
+        ${ne.itens.length === 0 ? '<div class="anomalia-empty">Sem itens</div>' :
+          ne.itens.map(a => `
+            <div class="anomalia-item">
+              <b>${esc(a.marca)}</b>
+              <span style="color:var(--text-dim); font-size:11px">${esc(a.uf || '')}</span>
+              <span class="anomalia-tag anomalia-tag-blue">${a.dias_atras}d atrás</span>
+            </div>
+          `).join('')
+        }
+      </div>
+    `);
+
+    list.innerHTML = blocos.join('');
+  }
+
+  fetch('/api/anomalias')
+    .then(r => r.json())
+    .then(renderAnomalias)
+    .catch(() => {
+      document.getElementById('anomalias-list').innerHTML =
+        '<div class="insight-empty">❌ Erro ao carregar anomalias.</div>';
+    });
+})();
+
+// ---- Gráficos (Chart.js) ----
+(function () {
+  Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+  Chart.defaults.font.size = 11.5;
+  Chart.defaults.color = '#5a6470';
+
+  const cores = ['#ff6100', '#22c55e', '#3b82f6', '#a855f7', '#eab308', '#ec4899', '#14b8a6', '#f97316'];
+
+  async function carregar() {
+    const r = await fetch('/api/dados');
+    const dados = await r.json();
+    if (!Array.isArray(dados) || dados.length === 0) return;
+
+    // 1) Porte
+    const porte = {};
+    dados.forEach(d => {
+      const p = d.porte_empresa || 'Não informado';
+      porte[p] = (porte[p] || 0) + 1;
+    });
+    new Chart(document.getElementById('chart-porte'), {
+      type: 'doughnut',
+      data: { labels: Object.keys(porte), datasets: [{ data: Object.values(porte), backgroundColor: cores }] },
+      options: { plugins: { legend: { position: 'bottom' } } },
+    });
+
+    // 2) Status email
+    const status = { 'Com email': 0, 'Sem email': 0 };
+    dados.forEach(d => {
+      status[d.email_contato ? 'Com email' : 'Sem email']++;
+    });
+    new Chart(document.getElementById('chart-status'), {
+      type: 'doughnut',
+      data: { labels: Object.keys(status), datasets: [{ data: Object.values(status), backgroundColor: ['#22c55e', '#e11d48'] }] },
+      options: { plugins: { legend: { position: 'bottom' } } },
+    });
+
+    // 3) UF (barras)
+    const uf = {};
+    dados.forEach(d => {
+      const u = d.uf || '?';
+      uf[u] = (uf[u] || 0) + 1;
+    });
+    const ufOrd = Object.entries(uf).sort((a, b) => b[1] - a[1]);
+    new Chart(document.getElementById('chart-uf'), {
+      type: 'bar',
+      data: { labels: ufOrd.map(x => x[0]), datasets: [{ label: 'Bets', data: ufOrd.map(x => x[1]), backgroundColor: '#ff6100' }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+    });
+  }
+
+  carregar();
+})();
+</script>
+
+</body>
+</html>

@@ -13,45 +13,7 @@
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-    </div>
-    <div class="brand-text">
-      <span class="brand-name">Prospector</span>
-      <span class="brand-sub">Bets · v3</span>
-    </div>
-    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu" aria-label="Colapsar menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-  </div>
-
-  <div class="sidebar-section-title">Navegação</div>
-  <nav class="sidebar-nav">
-    <a href="{{ url_for('index') }}" class="nav-item active">
-      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
-      <span>Dashboard</span>
-    </a>
-    <a href="#charts-section" class="nav-item" onclick="document.getElementById('charts-section').scrollIntoView({behavior:'smooth'});event.preventDefault();">
-      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12v5"/><path d="M12 7v10"/><path d="M17 10v7"/></svg></span>
-      <span>Análise</span>
-    </a>
-    <a href="{{ url_for('auditoria') }}" class="nav-item">
-      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span>
-      <span>Auditoria</span>
-    </a>
-  </nav>
-
-  <div class="sidebar-footer">
-    <div class="sidebar-status-chip">
-      <span class="status-pulse"></span>
-      <span id="playwright-status">Sistema Online</span>
-    </div>
-    Min. da Fazenda<br>SPA · Lei 14.790/23
-  </div>
-</aside>
+{% include '_sidebar.html' %}
 
 <!-- ===== MAIN ===== -->
 <div class="main-wrapper">
@@ -81,10 +43,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/></svg>
         Recarregar
       </button>
-      <button class="btn-top btn-top-primary" onclick="document.getElementById('charts-section').scrollIntoView({behavior:'smooth'})">
+      <a class="btn-top btn-top-primary" href="{{ url_for('analytics_page') }}" style="text-decoration:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9"/><path d="M12 16V7"/><path d="M17 16v-4"/></svg>
         Analytics
-      </button>
+      </a>
     </div>
   </header>
 
@@ -171,40 +133,6 @@
       <div class="kpi-trend">Data de coleta</div>
     </div>
 
-  </section>
-
-  <!-- ===== INSIGHTS — Holdings + Anomalias (etapa 6) ===== -->
-  <section class="insights-section">
-    <div class="insights-grid">
-
-      <!-- Card Holdings (esquerda, ocupa 2/3) -->
-      <div class="insight-card insight-holdings">
-        <div class="insight-header">
-          <div>
-            <h3 class="insight-title">🏢 Holdings (grupos empresariais)</h3>
-            <p class="insight-sub">Bets com mesmo CNPJ raiz — top 5 por nº de marcas</p>
-          </div>
-          <span class="insight-counter" id="holdings-counter">—</span>
-        </div>
-        <div class="insight-body" id="holdings-list">
-          <div class="insight-loading">Carregando holdings…</div>
-        </div>
-      </div>
-
-      <!-- Card Anomalias (direita, ocupa 1/3) -->
-      <div class="insight-card insight-anomalias">
-        <div class="insight-header">
-          <div>
-            <h3 class="insight-title">⚠️ Anomalias da semana</h3>
-            <p class="insight-sub">Comportamentos atípicos detectados</p>
-          </div>
-        </div>
-        <div class="insight-body" id="anomalias-list">
-          <div class="insight-loading">Carregando anomalias…</div>
-        </div>
-      </div>
-
-    </div>
   </section>
 
   <!-- FILTER BAR -->
@@ -330,25 +258,6 @@
       <button class="btn-page" id="btn-next" onclick="irParaPagina(paginaAtual + 1)">Próximo ›</button>
     </div>
 
-    <!-- CHARTS -->
-    <section class="charts-section" id="charts-section">
-      <h2 class="section-title">Visualizações</h2>
-      <p class="section-subtitle">// TODOS OS GRÁFICOS REFLETEM OS FILTROS APLICADOS</p>
-      <div class="charts-grid">
-        <div class="chart-card">
-          <h3 class="chart-title">Porte da Empresa</h3>
-          <div class="chart-container"><canvas id="chart-porte"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <h3 class="chart-title">Status de Email</h3>
-          <div class="chart-container"><canvas id="chart-status"></canvas></div>
-        </div>
-        <div class="chart-card chart-card-wide">
-          <h3 class="chart-title">Bets por UF</h3>
-          <div class="chart-container chart-container-bar"><canvas id="chart-uf"></canvas></div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="footer">
@@ -357,159 +266,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='app.js') }}"></script>
-<script>
-// Sidebar collapse — persistente em localStorage
-(function() {
-  const sidebarEl = document.querySelector('.sidebar');
-  const collapseBtn = document.getElementById('sidebarCollapseBtn');
-  const SIDEBAR_KEY = 'prospector-sidebar-collapsed';
-  if (localStorage.getItem(SIDEBAR_KEY) === '1') {
-    sidebarEl.classList.add('is-collapsed');
-    document.body.classList.add('sidebar-collapsed');
-  }
-  collapseBtn?.addEventListener('click', () => {
-    const collapsed = sidebarEl.classList.toggle('is-collapsed');
-    document.body.classList.toggle('sidebar-collapsed', collapsed);
-    localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
-    collapseBtn.title = collapsed ? 'Expandir menu' : 'Colapsar menu';
-  });
-})();
-</script>
 
-<!-- ===== INSIGHTS — Carregamento de Holdings + Anomalias (etapa 6) ===== -->
-<script>
-(function () {
-  const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  function badgeScore(score, classe) {
-    if (score == null) return '<span class="score-badge score-nd">—</span>';
-    return `<span class="score-badge score-${classe || 'nd'}">${score}</span>`;
-  }
-
-  async function carregarHoldings() {
-    try {
-      const r = await fetch('/api/holdings?top=5');
-      const j = await r.json();
-      const counter = document.getElementById('holdings-counter');
-      const list    = document.getElementById('holdings-list');
-      counter.textContent = `${j.total_holdings || 0} grupos detectados`;
-      if (!j.holdings || !j.holdings.length) {
-        list.innerHTML = '<div class="insight-empty">Nenhum grupo empresarial identificado ainda.</div>';
-        return;
-      }
-      list.innerHTML = j.holdings.map(h => {
-        const marcasTags = h.marcas.slice(0, 8).map(m =>
-          `<span class="holding-marca">${esc(m)}</span>`
-        ).join('');
-        const ra1000Badge = h.n_ra1000 > 0
-          ? `<span class="holding-flag holding-flag-ra1000" title="${h.n_ra1000} com selo RA1000">★ ${h.n_ra1000} RA1000</span>` : '';
-        const inativasBadge = h.n_inativas > 0
-          ? `<span class="holding-flag holding-flag-warn" title="${h.n_inativas} URLs inativas">⚠ ${h.n_inativas} inativas</span>` : '';
-        const emailBadge = h.n_com_email > 0
-          ? `<span class="holding-flag holding-flag-success" title="${h.n_com_email} com email">📧 ${h.n_com_email} emails</span>` : '';
-        return `
-          <div class="holding-card" data-cnpj-raiz="${esc(h.cnpj_raiz)}">
-            <div class="holding-card-head">
-              <div class="holding-info">
-                <div class="holding-razao" title="${esc(h.razao_social)}">${esc(h.razao_social) || '(sem razão social)'}</div>
-                <div class="holding-meta">CNPJ raiz <code>${esc(h.cnpj_raiz)}</code> · ${esc(h.uf || '—')} ${h.municipio ? '· ' + esc(h.municipio) : ''}</div>
-              </div>
-              <div class="holding-score-block">
-                ${badgeScore(h.score_medio, h.score_medio >= 80 ? 'excelente' : h.score_medio >= 65 ? 'bom' : h.score_medio >= 50 ? 'regular' : h.score_medio >= 30 ? 'ruim' : 'critico')}
-                <span class="holding-n-marcas">${h.n_marcas} marcas</span>
-              </div>
-            </div>
-            <div class="holding-marcas">${marcasTags}</div>
-            <div class="holding-flags">${ra1000Badge}${inativasBadge}${emailBadge}</div>
-          </div>
-        `;
-      }).join('');
-    } catch (e) {
-      document.getElementById('holdings-list').innerHTML =
-        '<div class="insight-empty">Erro ao carregar holdings.</div>';
-    }
-  }
-
-  async function carregarAnomalias() {
-    try {
-      const r = await fetch('/api/anomalias');
-      const j = await r.json();
-      const list = document.getElementById('anomalias-list');
-      const blocos = [];
-
-      // 1) URLs caindo
-      const uc = j.urls_caindo || {total: 0, itens: []};
-      blocos.push(`
-        <div class="anomalia-bloco">
-          <div class="anomalia-bloco-head">
-            <span class="anomalia-icon-red">🔴</span>
-            <div>
-              <div class="anomalia-bloco-title">URLs caindo (24h)</div>
-              <div class="anomalia-bloco-sub">${uc.total} bets com 3+ falhas recentes</div>
-            </div>
-          </div>
-          ${uc.itens.slice(0,4).map(a => `
-            <div class="anomalia-item">
-              <b>${esc(a.marca || a.url)}</b>
-              <span class="anomalia-tag anomalia-tag-red">${a.n_falhas_24h}× falhas</span>
-            </div>
-          `).join('') || '<div class="anomalia-empty">Tudo estável</div>'}
-        </div>
-      `);
-
-      // 2) Queda nota RA
-      const qra = j.queda_ra || {total: 0, itens: []};
-      blocos.push(`
-        <div class="anomalia-bloco">
-          <div class="anomalia-bloco-head">
-            <span class="anomalia-icon-orange">📉</span>
-            <div>
-              <div class="anomalia-bloco-title">Queda na nota RA</div>
-              <div class="anomalia-bloco-sub">${qra.total} bets com queda ≥0.3</div>
-            </div>
-          </div>
-          ${qra.itens.slice(0,3).map(a => `
-            <div class="anomalia-item">
-              <b>${esc(a.marca)}</b>
-              <span class="anomalia-tag anomalia-tag-orange">${a.nota_anterior}→${a.nota_atual}</span>
-            </div>
-          `).join('') || '<div class="anomalia-empty">Sem quedas registradas (histórico ainda formando)</div>'}
-        </div>
-      `);
-
-      // 3) Novas sem email
-      const ne = j.novas_sem_email || {total: 0, itens: []};
-      blocos.push(`
-        <div class="anomalia-bloco">
-          <div class="anomalia-bloco-head">
-            <span class="anomalia-icon-blue">🎯</span>
-            <div>
-              <div class="anomalia-bloco-title">Oportunidades sem email</div>
-              <div class="anomalia-bloco-sub">${ne.total} bets adicionadas recentemente</div>
-            </div>
-          </div>
-          ${ne.itens.slice(0,4).map(a => `
-            <div class="anomalia-item">
-              <b>${esc(a.marca)}</b>
-              <span class="anomalia-tag anomalia-tag-blue">${a.dias_atras}d</span>
-            </div>
-          `).join('') || '<div class="anomalia-empty">Sem itens</div>'}
-        </div>
-      `);
-
-      list.innerHTML = blocos.join('');
-    } catch (e) {
-      document.getElementById('anomalias-list').innerHTML =
-        '<div class="insight-empty">Erro ao carregar anomalias.</div>';
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    carregarHoldings();
-    carregarAnomalias();
-  });
-})();
-</script>
 
 <!-- ===== AI CHAT — botão flutuante + drawer (etapa 5) ===== -->
 <button id="chat-fab" type="button" title="Pergunte ao assistente AI (Cmd+K)" aria-label="Abrir chat AI">

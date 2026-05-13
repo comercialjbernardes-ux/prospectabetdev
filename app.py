@@ -294,7 +294,19 @@ def _aplicar_filtros_query(registros: list[dict], params: dict) -> list[dict]:
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", active_tab="dashboard")
+
+
+@app.route("/holdings")
+def holdings_page():
+    """Página dedicada às holdings (grupos empresariais)."""
+    return render_template("holdings.html", active_tab="holdings")
+
+
+@app.route("/analytics")
+def analytics_page():
+    """Página dedicada a gráficos e anomalias da semana."""
+    return render_template("analytics.html", active_tab="analytics")
 
 
 @app.route("/auditoria")
@@ -327,6 +339,7 @@ def auditoria():
 
     return render_template(
         "auditoria.html",
+        active_tab="auditoria",
         eventos=eventos,
         total_eventos=total_eventos,
         pagina_atual=pagina_atual,
@@ -736,7 +749,7 @@ def api_snapshots():
 @app.route("/notificacoes")
 def notificacoes_page():
     """Página de configuração de alertas/webhooks (etapa 4.4)."""
-    return render_template("notificacoes.html")
+    return render_template("notificacoes.html", active_tab="notificacoes")
 
 
 @app.route("/api/notificacoes/config", methods=["GET", "POST"])

@@ -1,0 +1,65 @@
+{# Sidebar partial compartilhado entre todas as páginas. Parâmetro: active_tab #}
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">Prospector</span>
+      <span class="brand-sub">Bets · v3</span>
+    </div>
+    <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu" aria-label="Colapsar menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+  </div>
+
+  <div class="sidebar-section-title">Navegação</div>
+  <nav class="sidebar-nav">
+    <a href="{{ url_for('index') }}" class="nav-item {% if active_tab == 'dashboard' %}active{% endif %}">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+      <span>Bets</span>
+    </a>
+    <a href="{{ url_for('holdings_page') }}" class="nav-item {% if active_tab == 'holdings' %}active{% endif %}">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+      <span>Holdings</span>
+    </a>
+    <a href="{{ url_for('analytics_page') }}" class="nav-item {% if active_tab == 'analytics' %}active{% endif %}">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12v5"/><path d="M12 7v10"/><path d="M17 10v7"/></svg></span>
+      <span>Analytics</span>
+    </a>
+    <a href="{{ url_for('auditoria') }}" class="nav-item {% if active_tab == 'auditoria' %}active{% endif %}">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></span>
+      <span>Auditoria</span>
+    </a>
+    <a href="{{ url_for('notificacoes_page') }}" class="nav-item {% if active_tab == 'notificacoes' %}active{% endif %}">
+      <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+      <span>Notificações</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-status-chip">
+      <span class="status-pulse"></span>
+      <span id="playwright-status">Sistema Online</span>
+    </div>
+    Min. da Fazenda<br>SPA · Lei 14.790/23
+  </div>
+</aside>
+
+<script>
+(function () {
+  const sidebarEl = document.querySelector('.sidebar');
+  const collapseBtn = document.getElementById('sidebarCollapseBtn');
+  const SIDEBAR_KEY = 'prospector-sidebar-collapsed';
+  if (localStorage.getItem(SIDEBAR_KEY) === '1') {
+    sidebarEl.classList.add('is-collapsed');
+    document.body.classList.add('sidebar-collapsed');
+  }
+  collapseBtn?.addEventListener('click', () => {
+    const collapsed = sidebarEl.classList.toggle('is-collapsed');
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
+    localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0');
+    collapseBtn.title = collapsed ? 'Expandir menu' : 'Colapsar menu';
+  });
+})();
+</script>
