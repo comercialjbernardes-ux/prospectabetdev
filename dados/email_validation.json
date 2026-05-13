@@ -1,0 +1,34 @@
+{
+  "afiliados@betvip.com": {
+    "checado_em": "2026-05-13T03:29:05",
+    "email": "afiliados@betvip.com",
+    "status": "valid",
+    "normalized": "afiliados@betvip.com",
+    "domain": "betvip.com",
+    "razao": "Sintaxe OK + domínio tem MX record"
+  },
+  "contato@55w.bet.br": {
+    "checado_em": "2026-05-13T03:29:05",
+    "email": "contato@55w.bet.br",
+    "status": "no_mx",
+    "normalized": "contato@55w.bet.br",
+    "domain": "55w.bet.br",
+    "razao": "Sintaxe OK mas sem MX: The domain name 55w.bet.br does not accept email."
+  },
+  "suporte@betbra.bet.br": {
+    "checado_em": "2026-05-13T03:29:05",
+    "email": "suporte@betbra.bet.br",
+    "status": "valid",
+    "normalized": "suporte@betbra.bet.br",
+    "domain": "betbra.bet.br",
+    "razao": "Sintaxe OK + domínio tem MX record"
+  },
+  "teste@teste.com.br": {
+    "checado_em": "2026-05-13T03:29:05",
+    "email": "teste@teste.com.br",
+    "status": "valid",
+    "normalized": "teste@teste.com.br",
+    "domain": "teste.com.br",
+    "razao": "Sintaxe OK + domínio tem MX record"
+  }
+}

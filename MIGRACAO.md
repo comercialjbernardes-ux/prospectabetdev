@@ -14,8 +14,8 @@ Documento que registra **o que mudou neste fork** em relação ao sistema em pro
 | **3** | Health Score composto + snapshots | ✅ Concluída | ⏳ aguardando | `045be8f` |
 | **4** | Alertas inteligentes via webhook | ✅ Concluída | ⏳ aguardando | `5cdc95f` |
 | **5** | AI Chat sobre os dados (Claude API) | ✅ Concluída | ⏳ aguardando | `20e6a97` |
-| **6** | Anomalias + grupos empresariais | ✅ Concluída | ⏳ aguardando | a commitar |
-| **7** | Email validation worker | ⚪ Pendente | — | — |
+| **6** | Anomalias + grupos empresariais | ✅ Concluída | ⏳ aguardando | `2ab36cc` |
+| **7** | Email validation worker | ✅ Concluída | ⏳ aguardando | a commitar |
 
 Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 
@@ -61,6 +61,60 @@ Legenda: ✅ Concluída · 🟡 Em andamento · ⚪ Pendente · ❌ Bloqueada
 - ✅ 11ª req em /api/editar/min retorna HTTP 429
 - ✅ Cache de health: latência de `/api/dados` deve reduzir significativamente
 - ✅ Principal (5002) continua rodando sem alteração
+
+### Etapa 7 — Email Validation Worker ✅
+
+**Arquivo novo:**
+- `email_validation.py` (~200 linhas) — worker daemon validando sintaxe + MX record dos emails
+
+**Validação em 2 níveis:**
+1. **Sintaxe** — parser RFC do `email-validator`
+2. **Deliverability** — consulta DNS para MX record do domínio
+
+**Status possíveis:**
+- `valid` — sintaxe OK + MX existe (badge verde)
+- `no_mx` — sintaxe OK mas domínio não aceita email (badge amarelo)
+- `invalid` — sintaxe inválida (badge vermelho)
+- `erro` — falha de DNS (badge vermelho)
+- `sem_email` — registro não tem email (oculto)
+
+**`data_manager.py`:**
+- Nova função `aplicar_email_validation(registros, ev_module)` aplica status em cada registro
+- `recarregar()` ganha parâmetro `email_validation_module`
+
+**`app.py`:**
+- Import top-level
+- Endpoint **`GET /api/email-validation`**
+- Worker iniciado no boot block
+
+**`requirements.txt`:**
+- Nova dep: `email-validator>=2.0.0`
+
+**Frontend:**
+- Função JS `emailValidationDot(r)` retorna bolinha colorida ao lado do email
+- 4 classes CSS: `.email-val-ok` (verde), `.email-val-warn` (amarelo), `.email-val-err` (vermelho), `.email-val-nd` (cinza)
+- Polling a cada 5min em `/api/email-validation`
+- Tooltip explicativo (sintaxe/MX status)
+
+**Worker config:**
+- TICK_SEGUNDOS=180 (3min)
+- 5 emails/tick, 2 workers paralelos
+- Re-check a cada 7 dias (deliverability raramente muda)
+- Circuit breaker compartilhado com outros workers
+
+**Resultados reais (4 emails cadastrados):**
+- ✅ `afiliados@betvip.com` — válido
+- ⚠️ **`contato@55w.bet.br`** — **domínio não aceita email** (sem MX) — descoberta importante!
+- ✅ `suporte@betbra.bet.br` — válido
+- ✅ `teste@teste.com.br` — válido
+
+**Validação:**
+- ✅ `pytest tests/` — **82/82 passing** (5 novos em `TestEmailValidation`)
+- ✅ Mypy: Success no issues found
+- ✅ Bolinhas amarelas visíveis na UI ao lado dos 3 emails problemáticos
+- ✅ Worker rodando em background
+
+---
 
 ### Etapa 6 — Anomalias + Grupos Empresariais ✅
 

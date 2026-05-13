@@ -89,6 +89,13 @@ except ImportError:
     analise_anomalias = None  # type: ignore
     _ANALISE_DISPONIVEL = False
 
+try:
+    import email_validation
+    _EMAIL_VALIDATION_DISPONIVEL = True
+except ImportError:
+    email_validation = None  # type: ignore
+    _EMAIL_VALIDATION_DISPONIVEL = False
+
 # Playwright disponÃ­vel?
 try:
     from playwright.sync_api import sync_playwright as _pw  # noqa: F401
@@ -208,6 +215,7 @@ def recarregar_dados() -> None:
         url_health_module=url_health,
         ra_module=_ra_health if _RA_HEALTH_DISPONIVEL else None,
         stats_snapshot_module=stats_snapshot if _STATS_SNAPSHOT_DISPONIVEL else None,
+        email_validation_module=email_validation if _EMAIL_VALIDATION_DISPONIVEL else None,
     )
     _invalidar_cache_stats()
 
@@ -801,6 +809,17 @@ def api_chat():
         }), 500
 
 
+@app.route("/api/email-validation")
+def api_email_validation():
+    """Retorna o JSON de validação de emails (etapa 7)."""
+    if not _EMAIL_VALIDATION_DISPONIVEL:
+        return jsonify({})
+    try:
+        return jsonify(email_validation.ler_health())
+    except Exception:
+        return jsonify({})
+
+
 @app.route("/api/holdings")
 def api_holdings():
     """Grupos empresariais por CNPJ raiz (etapa 6.1). Query: ?top=N (default 5)."""
@@ -954,6 +973,8 @@ if _deve_iniciar_worker():
         afiliados_health.iniciar_worker()
     if _RA_HEALTH_DISPONIVEL:
         _ra_health.iniciar_worker()
+    if _EMAIL_VALIDATION_DISPONIVEL:
+        email_validation.iniciar_worker()
 
 
 if __name__ == "__main__":

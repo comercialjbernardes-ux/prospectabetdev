@@ -17,6 +17,9 @@ openpyxl>=3.1.0            # Export XLSX server-side (/api/exportar)
 # ── AI Chat (etapa 5) ────────────────────────────────────────────────────────
 anthropic>=0.40.0          # Claude API client (tool use + prompt caching)
 
+# ── Email validation (etapa 7) ───────────────────────────────────────────────
+email-validator>=2.0.0     # Validação RFC + MX record check (DNS)
+
 # ── Playwright (opcional) ────────────────────────────────────────────────────
 # playwright>=1.40.0       # Descomente e rode: playwright install chromium
 

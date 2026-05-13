@@ -1572,6 +1572,23 @@ body.sidebar-collapsed .main-wrapper {
   flex-shrink: 0;
   box-shadow: 0 0 0 2px rgba(255,255,255,.6);
 }
+/* Email validation dot (etapa 7) */
+.email-val-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.6);
+}
+.email-val-ok   { background: var(--success); }   /* válido + MX */
+.email-val-warn { background: #f59e0b; }          /* sintaxe ok mas sem MX */
+.email-val-err  { background: var(--danger); }    /* sintaxe inválida ou erro */
+.email-val-nd   { background: var(--text-faint); }/* aguardando */
+.email-val-none { display: none; }
+
 .url-dot-ok          { background: var(--success); }   /* 200 OK    — verde   */
 .url-dot-redirect    { background: #f59e0b; }          /* 30x       — amarelo */
 .url-dot-bloqueado   { background: var(--orange); }    /* 4xx bots  — laranja */

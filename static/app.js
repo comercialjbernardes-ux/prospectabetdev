@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciarPollingUrlHealth();
   iniciarPollingAfiliadosHealth();
   iniciarPollingReclameAqui();
+  iniciarPollingEmailValidation();
   carregarSparklines();
 });
 
@@ -413,7 +414,7 @@ function renderizarTabela() {
       <td title="${esc(r.razao_social)}">${celulaEditavel(r, 'razao_social')}</td>
       <td>${esc(r.cnpj)}</td>
       <td class="url-cell" data-url="${esc(r.url || '')}">${celulaEditavel(r, 'url', 'url')}${urlHealthDot(r)}</td>
-      <td>${celulaEditavel(r, 'email_contato', 'email')}</td>
+      <td>${celulaEditavel(r, 'email_contato', 'email')}${emailValidationDot(r)}</td>
       <td>${badgeAfiliados(r)}</td>
       <td>${badgeReclameAqui(r)}</td>
       <td>${badgeScore(r)}</td>
@@ -1073,6 +1074,33 @@ function urlHealthDot(r) {
   return `<span class="url-dot ${cls}" title="${tooltip}" data-status="${st}"></span>`;
 }
 
+// Email validation badge (etapa 7) — verde=válido, amarelo=sem MX, vermelho=inválido
+const EMAIL_VAL_CLASS = {
+  'valid':        'email-val-ok',
+  'no_mx':        'email-val-warn',
+  'invalid':      'email-val-err',
+  'erro':         'email-val-err',
+  'desconhecido': 'email-val-nd',
+  'sem_email':    'email-val-none',
+};
+const EMAIL_VAL_LABEL = {
+  'valid':        'Email válido (sintaxe OK + domínio aceita email)',
+  'no_mx':        'Sintaxe OK mas domínio NÃO aceita email (sem MX record)',
+  'invalid':      'Email inválido (sintaxe incorreta)',
+  'erro':         'Erro ao validar (falha DNS)',
+  'desconhecido': 'Aguardando validação',
+};
+function emailValidationDot(r) {
+  // Sem email → não mostra badge (a cell já tem o "+ adicionar")
+  if (!r.email_contato) return '';
+  const st = r._email_validation_status || 'desconhecido';
+  if (st === 'sem_email') return '';
+  const cls = EMAIL_VAL_CLASS[st] || 'email-val-nd';
+  const label = EMAIL_VAL_LABEL[st] || st;
+  const razao = r._email_validation_razao ? ` · ${r._email_validation_razao}` : '';
+  return `<span class="email-val-dot ${cls}" title="${esc(label + razao)}" data-status="${st}"></span>`;
+}
+
 /**
  * Polling de saúde das URLs — a cada 15s busca /api/url-health
  * e atualiza apenas as bolinhas no DOM (não re-renderiza tabela).
@@ -1462,4 +1490,35 @@ async function carregarSparklines() {
   } catch (_e) {
     // Silencioso — sparklines estáticas continuam visíveis
   }
+}
+
+// ---------------------------------------------------------------------------
+// Polling email validation (etapa 7) — primeiro tick 8s, depois cada 5min
+// ---------------------------------------------------------------------------
+function iniciarPollingEmailValidation() {
+  const atualizar = async () => {
+    try {
+      const resp = await fetch('/api/email-validation');
+      if (!resp.ok) return;
+      const health = await resp.json();
+      let mudou = false;
+      todosOsDados.forEach(r => {
+        const email = (r.email_contato || '').trim().toLowerCase();
+        if (!email) return;
+        const info = health[email];
+        if (!info) return;
+        if (r._email_validation_status !== info.status) {
+          r._email_validation_status = info.status;
+          r._email_validation_razao  = info.razao || '';
+          r._email_validation_ts     = info.checado_em || '';
+          mudou = true;
+        }
+      });
+      if (mudou) renderizarTabela();
+    } catch (_e) {
+      // Silencioso
+    }
+  };
+  setTimeout(atualizar, 8000);
+  setInterval(atualizar, 5 * 60 * 1000);
 }

@@ -320,6 +320,33 @@ def aplicar_reclame_aqui_health(registros: list[dict], ra_module: Any) -> None:
         r["_ra_ts"]          = info.get("checado_em", "")
 
 
+def aplicar_email_validation(registros: list[dict], ev_module: Any) -> None:
+    """
+    Mescla status de validação de email em cada registro (etapa 7).
+    Escreve `_email_validation_status` (valid|no_mx|invalid|erro|sem_email).
+    """
+    if ev_module is None:
+        for r in registros:
+            r["_email_validation_status"] = "sem_email" if not r.get("email_contato") else "desconhecido"
+        return
+    try:
+        health = ev_module.ler_health()
+    except Exception:
+        health = {}
+    for r in registros:
+        email = (r.get("email_contato") or "").strip().lower()
+        if not email:
+            r["_email_validation_status"] = "sem_email"
+            continue
+        info = health.get(email)
+        if not info:
+            r["_email_validation_status"] = "desconhecido"
+            continue
+        r["_email_validation_status"] = info.get("status", "desconhecido")
+        r["_email_validation_ts"]     = info.get("checado_em", "")
+        r["_email_validation_razao"]  = info.get("razao", "")
+
+
 def aplicar_url_health(registros: list[dict], url_health_module: Any) -> None:
     """Mescla url_health.json (cacheado). Normaliza erro_http 4xx → 'bloqueado'."""
     health = _ler_health_cached(
@@ -358,6 +385,7 @@ def recarregar(
     url_health_module: Any,
     ra_module: Any,
     stats_snapshot_module: Any | None = None,
+    email_validation_module: Any | None = None,
 ) -> None:
     """
     Recarrega dados + overrides + aplica todos os merges.
@@ -371,6 +399,7 @@ def recarregar(
     aplicar_url_health(dados, url_health_module)
     aplicar_afiliados_health(dados)
     aplicar_reclame_aqui_health(dados, ra_module)
+    aplicar_email_validation(dados, email_validation_module)
     # Score composto — calculado DEPOIS dos merges, escreve _health_score em cada registro
     health_score.aplicar_em_lote(dados)
     with _dados_lock:

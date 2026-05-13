@@ -711,3 +711,69 @@ class TestAnaliseAnomalias:
         j = resp.get_json()
         for k in ('urls_caindo', 'queda_ra', 'novas_sem_email'):
             assert k in j
+
+
+# ---------------------------------------------------------------------------
+# Testes do email_validation (etapa 7)
+# ---------------------------------------------------------------------------
+
+class TestEmailValidation:
+
+    def test_validar_email_valido(self):
+        import email_validation
+        r = email_validation._validar_email('contato@google.com')
+        assert r['status'] == 'valid'
+        assert r['domain'] == 'google.com'
+
+    def test_validar_email_sintaxe_invalida(self):
+        import email_validation
+        r = email_validation._validar_email('nao-e-email')
+        assert r['status'] == 'invalid'
+
+    def test_validar_email_dominio_sem_mx(self):
+        """Domínio sem MX record deve retornar no_mx."""
+        import email_validation
+        # Domínio que existe mas não tem MX (raro testar; usamos sintaxe ok + domínio inventado)
+        r = email_validation._validar_email('teste@dominio-totalmente-inexistente-xyz123.invalid')
+        # Deve retornar no_mx ou invalid (depende da resolução DNS local)
+        assert r['status'] in ('no_mx', 'invalid', 'erro')
+
+    def test_endpoint_email_validation_retorna_dict(self, cliente):
+        resp = cliente.get('/api/email-validation')
+        assert resp.status_code == 200
+        j = resp.get_json()
+        assert isinstance(j, dict)
+
+    def test_listar_emails_unicos(self, tmp_path, monkeypatch):
+        """Garante que emails são únicos e lowercased."""
+        import email_validation
+        import json_store
+        # Mock arquivos
+        fake_base = tmp_path / 'bets.json'
+        fake_ov   = tmp_path / 'overrides.json'
+        json_store.salvar(fake_base, [
+            {'email_contato': 'A@B.COM'},
+            {'email_contato': 'c@d.com'},
+            {'email_contato': ''},
+        ])
+        json_store.salvar(fake_ov, {
+            '_schema_version': 1,
+            '12345678': {'email_contato': 'a@b.com'},  # duplicado (lowercase)
+            '87654321': {'email_contato': 'e@f.com'},
+        })
+        monkeypatch.setattr(email_validation, 'ARQUIVO_DADOS', fake_base)
+        # Patch Path("dados/overrides.json") dentro do _listar_emails
+        from pathlib import Path
+        original_ler = json_store.ler
+        def ler_patched(path, default=None):
+            if str(path).endswith('overrides.json'):
+                return original_ler(fake_ov, default=default)
+            return original_ler(path, default=default)
+        monkeypatch.setattr(json_store, 'ler', ler_patched)
+
+        emails = email_validation._listar_emails()
+        # 3 únicos: a@b.com, c@d.com, e@f.com
+        assert len(emails) == 3
+        assert 'a@b.com' in emails
+        assert 'c@d.com' in emails
+        assert 'e@f.com' in emails
